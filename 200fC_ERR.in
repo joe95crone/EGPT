@@ -1,0 +1,912 @@
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
+
+Eo = 0 ; 			# Energy [eV]
+G=1-qe*Eo/(me*c*c) ;
+initrad= 12.74*1e-6;
+Qtot= -0.2*1e-12;
+temit= 11.*1e-12;
+numpart=65536.;
+accuracy(6) ;
+
+setparticles("beam",numpart,me,qe,Qtot);
+setrxydist("beam","g",0,initrad,0,3.);
+setphidist("beam","u",0,2*pi);
+settdist("beam","u",0,temit);
+
+GBr = 10e-3 ;
+setGBrxydist("beam","u",GBr/2,GBr) ;
+setGBphidist("beam","u",0,2*pi) ;
+setGBxemittance("beam",(0.45*initrad)/1e3) ;
+setGByemittance("beam",(0.45*initrad)/1e3) ;
+
+spacecharge3Dmesh("Cathode","Boundaries","AAAAAA");
+snapshot(0);
+zminmax("wcs","I", -1, 100.) ;
+
+#########    Gun Cavity    ###########
+crest = 136 ;
+offset = -9.26; ;
+phi = pi * (crest + offset)/180 ;
+freq = 2998e6 ;
+ffac =  63.*1e6 ; 			# Nominal field strength
+w    = 2*pi*freq ;
+map1D_TM("wcs",0 + dx1,0 + dy1,0 + dz1,1,0,0,0,1,0,"2.5cellgun.gdf","z","E",f_14_1*ffac + d_14_1,f_15_1*phi + d_15_1,f_16_1*w  + d_16_1);
+
+######### 4HC Cavity ###########
+f = 11994000000.;
+w00 = 2*pi*f;
+phi00 = -5.18/deg;
+ffac00 = 4380000.;
+map1D_TM("wcs",0 + dx2,0 + dy2,0.14 + dz2,1,0,0,0,1,0,"4cell_DCPx.gdf","z","Ez",f_14_2*ffac00 + d_14_2,f_15_2*phi00 + d_15_2,f_16_2*w00 + d_16_2);
+
+######### Dechirper Cavity ###########
+f = 2998500000.;
+w00 = 2*pi*f;
+phi00 = -117.37/deg;
+ffac00 = 27260000.;
+map1D_TM("wcs",0 + dx3,0 + dy3,0.52 + dz3,1,0,0,0,1,0,"3cell_DCP.gdf","z","Ez",f_14_3*ffac00 + d_14_3,f_15_3*phi00 + d_15_3,f_16_3*w00 + d_16_3);
+map1D_B("wcs",0 + dx4,0 + dy4,0.32 + dz4,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_4*0.2004 + d_14_4);
+map1D_B("wcs",0.1 + dx5,0 + dy5,0.32 + dz5,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_5*0.2004 + d_14_5);
+
+map1D_B("wcs",0 + dx6,0 + dy6,0.67 + dz6,1,0,0,0,1,0,"10cm_sol_map.gdf","z","Bz",f_14_6*0.1623 + d_14_6);
+map1D_B("wcs",0 + dx7,0 + dy7,0.92 + dz7,1,0,0,0,1,0,"ob_lens.gdf","z","Bz",f_14_7*1.5 + d_14_7);
+screen( "wcs", "I", 0.14);
+screen( "wcs", "I", 0.52);
+screen( "wcs", "I", 0.90179);
+screen( "wcs", "I", 0.93821);
+screen( "wcs", "I", 0., 1.02, 0.01);
+screen( "wcs", "I", 0.88358, 0.93821, 0.001);
