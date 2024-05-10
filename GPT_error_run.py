@@ -18,37 +18,36 @@ import GPTin_error_modifier as GPTinmod # import the GPT lattice file (.in file)
 
 # function for running GPT
 #! careful of the GPT path and GPT license
-def GPT_run(outfile, infile, tol_vals):
+def GPT_run(infile, tol_struct):
+    outfile = infile.split('.')[0] + '_ERR' + '.' + infile.split('.')[-1]
+    # function to get the tol vals from the tolerance structure
+
     # code to write tolerance values correctly dx1=val etc.
     GPT_cmd = '"C:/Program Files/General Particle Tracer/bin/gpt.exe" -j 4 -o {0} {1} {2} GPTLICENSE=1384567269'
-    os.system(GPT_cmd.format(outfile, infile, tol_struct))
+    #os.system(GPT_cmd.format(outfile, infile, err_vals))
 
 
 if __name__ == "__main__":
 
-    # create errored lattice + get error identifiers
-    GPT_lat_err = GPTinmod.GPT_error_mod('200fC.in')
-    err_idents = GPT_lat_err.lattice_replacer() 
-    print(err_idents)
+    # read the initial GPT file
+    init_GPT_file = sys.argv[1]
+    GPT_lat_err = GPTinmod.GPT_error_mod(init_GPT_file)
+
+    # try and except on sys.argv[2] (YAML tolerance file) to see if this is a template generation run or an error run 
+    try:
+        # users pass tolerances - YAML file, modified from template
+        print(sys.argv[2])
+    except IndexError:
+        # generate YAML template and errored lattice
+        GPT_lat_err.lattice_replacer_template() 
     
     # settings for error analysis
-    trunc = 3 # truncate all error distributions to 3 standard deviations 
-
-    # users pass tolerances - could be passed in some kind of GUI form
-    #toldx1 = float(sys.argv[1])
-    #tolf1 = float(sys.argv[2])
+    #trunc = 3 # truncate all error distributions to 3 standard deviations 
 
     # generate error value (example of an additive error)
     #dx1 =  gen.gaussian_error(0, toldx1, trunc)
     #print(dx1)
 
-    # generate error value (example of a fractional error)
-    #f1 = gen.gaussian_error(1, tolf1, trunc)
-    #print(f1)
-    # Take in the tolerance data from a yaml file
-    # <ele_name>:
-    #   dx: <val> <gaussian|uniform>
-    #   d_<param_no>_<ele_no>: <val> <gaussian|uniform>
-    #   f_<param_no>_<ele_no>: <val> <gaussian|uniform>
+   
 
 

@@ -157,7 +157,7 @@ class GPT_error_mod:
     def lattice_replacer_template(self):
         # run lattice replacer
         error_param_names = self.parameter_name_sorter(self.lattice_replacer())
-        element_names_yaml = [GPTerr.element_types()[0][i] + "_" + str(GPTerr.element_types()[1][i]) for i in range(len(GPTerr.element_types()[0]))]
+        element_names_yaml = [self.element_types()[0][i] + "_" + str(self.element_types()[1][i]) for i in range(len(self.element_types()[0]))]
 
         # creating the template dictionary
         ele_err_dict = munch.Munch()
@@ -167,7 +167,6 @@ class GPT_error_mod:
             for param in range(len(error_param_names[ele])):
                 ele_param_dict[error_param_names[ele][param]] = [0, 'uniform']
             setattr(ele_err_dict, element_names_yaml[ele], ele_param_dict)
-        print(ele_err_dict)
 
         # create YAML tolerance template
         with open('GPTin_tolerance_temp.yml', 'w') as tempfile:
@@ -175,12 +174,12 @@ class GPT_error_mod:
 
 
 # test space!
-if __name__ == "__main__":
+#if __name__ == "__main__":
 
     # class initialization 
-    GPTerr = GPT_error_mod('200fC.in')
+#    GPTerr = GPT_error_mod('200fC.in')
 
-    GPTerr.lattice_replacer_template()
+#    GPTerr.lattice_replacer_template()
 
     # get element_names + numbers
     #names = [GPTerr.element_types()[0][i] + "-" + str(GPTerr.element_types()[1][i]) for i in range(len(GPTerr.element_types()[0]))]
