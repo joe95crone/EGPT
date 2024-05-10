@@ -1,0 +1,148 @@
+map1D_TM_1:
+  dx1:
+  - 0
+  - uniform
+  dy1:
+  - 0
+  - uniform
+  dz1:
+  - 0
+  - uniform
+  f_14_1:
+  - 0
+  - uniform
+  f_15_1:
+  - 0
+  - uniform
+  f_16_1:
+  - 0
+  - uniform
+  d_14_1:
+  - 0
+  - uniform
+  d_15_1:
+  - 0
+  - uniform
+  d_16_1:
+  - 0
+  - uniform
+map1D_TM_2:
+  dx2:
+  - 0
+  - uniform
+  dy2:
+  - 0
+  - uniform
+  dz2:
+  - 0
+  - uniform
+  f_14_2:
+  - 0
+  - uniform
+  f_15_2:
+  - 0
+  - uniform
+  f_16_2:
+  - 0
+  - uniform
+  d_14_2:
+  - 0
+  - uniform
+  d_15_2:
+  - 0
+  - uniform
+  d_16_2:
+  - 0
+  - uniform
+map1D_TM_3:
+  dx3:
+  - 0
+  - uniform
+  dy3:
+  - 0
+  - uniform
+  dz3:
+  - 0
+  - uniform
+  f_14_3:
+  - 0
+  - uniform
+  f_15_3:
+  - 0
+  - uniform
+  f_16_3:
+  - 0
+  - uniform
+  d_14_3:
+  - 0
+  - uniform
+  d_15_3:
+  - 0
+  - uniform
+  d_16_3:
+  - 0
+  - uniform
+map1D_B_1:
+  dx4:
+  - 0
+  - uniform
+  dy4:
+  - 0
+  - uniform
+  dz4:
+  - 0
+  - uniform
+  f_14_4:
+  - 0
+  - uniform
+  d_14_4:
+  - 0
+  - uniform
+map1D_B_2:
+  dx5:
+  - 0
+  - uniform
+  dy5:
+  - 0
+  - uniform
+  dz5:
+  - 0
+  - uniform
+  f_14_5:
+  - 0
+  - uniform
+  d_14_5:
+  - 0
+  - uniform
+map1D_B_3:
+  dx6:
+  - 0
+  - uniform
+  dy6:
+  - 0
+  - uniform
+  dz6:
+  - 0
+  - uniform
+  f_14_6:
+  - 0
+  - uniform
+  d_14_6:
+  - 0
+  - uniform
+map1D_B_4:
+  dx7:
+  - 0
+  - uniform
+  dy7:
+  - 0
+  - uniform
+  dz7:
+  - 0
+  - uniform
+  f_14_7:
+  - 0
+  - uniform
+  d_14_7:
+  - 0
+  - uniform

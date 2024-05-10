@@ -2,6 +2,8 @@
 
 import re
 from itertools import chain
+import munch
+import yaml
 
 class GPT_error_mod:
     def __init__(self, filename):
@@ -136,14 +138,54 @@ class GPT_error_mod:
         GPTwrite.writelines(new_lattice)
         GPTwrite.close()
         return self.error_param_format(err_param_ident)
+    
+    def parameter_name_sorter(self, error_param_names):
+        sort_param = []
+        sort_names = []
+        val = 1
+        for param in error_param_names:
+            if int(param[-1]) == val:
+                sort_param.append(param)
+            else:   
+                sort_names.append(sort_param)
+                val +=1
+                sort_param = []
+                sort_param.append(param)
+        sort_names.append(sort_param)
+        return sort_names
+
+    def lattice_replacer_template(self):
+        # run lattice replacer
+        error_param_names = self.parameter_name_sorter(self.lattice_replacer())
+        element_names_yaml = [GPTerr.element_types()[0][i] + "_" + str(GPTerr.element_types()[1][i]) for i in range(len(GPTerr.element_types()[0]))]
+
+        # creating the template dictionary
+        ele_err_dict = munch.Munch()
+        for ele in range(len(element_names_yaml)):
+            ele_err_dict.update({element_names_yaml[ele]: {}})
+            ele_param_dict = munch.Munch()
+            for param in range(len(error_param_names[ele])):
+                ele_param_dict[error_param_names[ele][param]] = [0, 'uniform']
+            setattr(ele_err_dict, element_names_yaml[ele], ele_param_dict)
+        print(ele_err_dict)
+
+        # create YAML tolerance template
+        with open('GPTin_tolerance_temp.yml', 'w') as tempfile:
+            yaml.dump(munch.unmunchify(ele_err_dict), tempfile, sort_keys=False)
 
 
 # test space!
-#if __name__ == "__main__":
+if __name__ == "__main__":
 
     # class initialization 
-    #GPTerr = GPT_error_mod('200fC.in')
-    
+    GPTerr = GPT_error_mod('200fC.in')
+
+    GPTerr.lattice_replacer_template()
+
+    # get element_names + numbers
+    #names = [GPTerr.element_types()[0][i] + "-" + str(GPTerr.element_types()[1][i]) for i in range(len(GPTerr.element_types()[0]))]
+    #print(names)
+
     # write lattice to file (currently just misalignments)
     #GPTerr.lattice_replacer() 
 

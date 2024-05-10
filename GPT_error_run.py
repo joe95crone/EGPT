@@ -35,24 +35,20 @@ if __name__ == "__main__":
     trunc = 3 # truncate all error distributions to 3 standard deviations 
 
     # users pass tolerances - could be passed in some kind of GUI form
-    toldx1 = float(sys.argv[1])
-    tolf1 = float(sys.argv[2])
+    #toldx1 = float(sys.argv[1])
+    #tolf1 = float(sys.argv[2])
 
     # generate error value (example of an additive error)
-    dx1 =  gen.gaussian_error(0, toldx1, trunc)
-    print(dx1)
+    #dx1 =  gen.gaussian_error(0, toldx1, trunc)
+    #print(dx1)
 
     # generate error value (example of a fractional error)
-    f1 = gen.gaussian_error(1, tolf1, trunc)
-    print(f1)
-
-    test0 = gen.gaussian_error(0,0,trunc)
-    print(test0)
-
-    # next task here is to write a GUI which creates a Table of errors and their tolerances for input
-    # |element_name + instance| tolerance1_name | tolerance2_name | ...
-    # | identifier | dx    |  dy    |  dz  | f1Bfac | dBfac |
-    # | map1D_B#1 | 100 um | 60 um | 60 um|        |        |
-
+    #f1 = gen.gaussian_error(1, tolf1, trunc)
+    #print(f1)
+    # Take in the tolerance data from a yaml file
+    # <ele_name>:
+    #   dx: <val> <gaussian|uniform>
+    #   d_<param_no>_<ele_no>: <val> <gaussian|uniform>
+    #   f_<param_no>_<ele_no>: <val> <gaussian|uniform>
 
 
