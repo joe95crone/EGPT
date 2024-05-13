@@ -1,27 +1,27 @@
 map1D_TM_1:
   dx1:
   - 0
-  - 0
-  - uniform
+  - 100.0e-6
+  - gausian
   - 3
   dy1:
   - 0
-  - 0
-  - uniform
+  - 100.0e-6
+  - gaussian
   - 3
   dz1:
   - 0
-  - 0
-  - uniform
+  - 100.0e-6
+  - gaussian
   - 3
   f_14_1:
   - 1
-  - 0
+  - 0.01
   - uniform
   - 3
   f_15_1:
   - 1
-  - 0
+  - 0.01
   - uniform
   - 3
   f_16_1:

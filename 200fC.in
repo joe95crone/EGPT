@@ -40,10 +40,10 @@ map1D_TM( "wcs", "z", 0.14, "4cell_DCPx.gdf", "z","Ez", ffac00, phi00, w00);
 
 ######### Dechirper Cavity ###########
 f = 2998500000.;
-w00 = 2*pi*f;
-phi00 = -117.37/deg;
-ffac00 = 27260000.;
-map1D_TM( "wcs", "z", 0.52, "3cell_DCP.gdf", "z","Ez", ffac00, phi00, w00);
+w01 = 2*pi*f;
+phi01 = -117.37/deg;
+ffac01 = 27260000.;
+map1D_TM( "wcs", "z", 0.52, "3cell_DCP.gdf", "z","Ez", ffac01, phi01, w01);
 map1D_B( "wcs", "z", 0.32, "10cm_sol_map.gdf", "z","Bz", 0.2004);
 map1D_B( "wcs", 0.1, 0, 0.32, 1, 0, 0, 0, 1, 0, "10cm_sol_map.gdf", "z","Bz", 0.2004); # ahhhhh
 

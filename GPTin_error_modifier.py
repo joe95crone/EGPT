@@ -165,7 +165,11 @@ class GPT_error_mod:
             ele_err_dict.update({element_names_yaml[ele]: {}})
             ele_param_dict = munch.Munch()
             for param in range(len(error_param_names[ele])):
-                ele_param_dict[error_param_names[ele][param]] = [0, 'uniform']
+                # mean, tolerance, error type, truncation (no. sigma)
+                if error_param_names[ele][param][0] == 'd':
+                    ele_param_dict[error_param_names[ele][param]] = [0, 0, 'gaussian', 3]
+                else:
+                    ele_param_dict[error_param_names[ele][param]] = [1, 0, 'gaussian', 3]
             setattr(ele_err_dict, element_names_yaml[ele], ele_param_dict)
 
         # create YAML tolerance template
