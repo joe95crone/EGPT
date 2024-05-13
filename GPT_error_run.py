@@ -13,19 +13,7 @@ import sys
 import os
 
 # GPT error files (missing analysis package)
-import generators as gen # import the error generators
 import GPTin_error_modifier as GPTinmod # import the GPT lattice file (.in file) modifier
-
-# function for running GPT
-#! careful of the GPT path and GPT license
-def GPT_run(infile, tol_struct):
-    outfile = infile.split('.')[0] + '_ERR' + '.' + infile.split('.')[-1]
-    # function to get the tol vals from the tolerance structure
-
-    # code to write tolerance values correctly dx1=val etc.
-    GPT_cmd = '"C:/Program Files/General Particle Tracer/bin/gpt.exe" -j 4 -o {0} {1} {2} GPTLICENSE=1384567269'
-    #os.system(GPT_cmd.format(outfile, infile, err_vals))
-
 
 if __name__ == "__main__":
 
