@@ -72,11 +72,11 @@ class GPT_input_runner:
         os.system(GPT_cmd.format(GPToutfile, GPTinfile, err_struct))
 
 # test space!
-if __name__ == "__main__":
+#if __name__ == "__main__":
 
     # class initialization 
-    GPTrunner = GPT_input_runner('200fC.in', 'GPTin_tolerance.yml')
-    print(GPTrunner.error_val_structure())
+#    GPTrunner = GPT_input_runner('200fC.in', 'GPTin_tolerance.yml')
+#    print(GPTrunner.error_val_structure())
 
     
 
