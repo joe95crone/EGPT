@@ -2,7 +2,7 @@ map1D_TM_1:
   dx1:
   - 0
   - 100.0e-6
-  - gausian
+  - gaussian
   - 3
   dy1:
   - 0

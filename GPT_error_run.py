@@ -5,12 +5,16 @@
 # numpy
 # re
 # itertools
+# os
+# munch
+# pyyaml
 
 import numpy as np
 
 # GUI/user input 
 import sys
 import os
+import time
 
 # GPT error files (missing analysis package)
 import GPTin_error_modifier as GPTinmod # import the GPT lattice file (.in file) modifier
@@ -21,21 +25,21 @@ if __name__ == "__main__":
     init_GPT_file = sys.argv[1]
     GPT_lat_err = GPTinmod.GPT_error_mod(init_GPT_file)
 
-    # try and except on sys.argv[2] (YAML tolerance file) to see if this is a template generation run or an error run 
-    try:
-        # users pass tolerances - YAML file, modified from template
-        print(sys.argv[2])
-    except IndexError:
-        # generate YAML template and errored lattice
-        GPT_lat_err.lattice_replacer_template() 
+    # try and except on sys.argv[2] (YAML tolerance file) to see if this is a template generation run or an error run
+    # if successful it is an error run 
+    # need some kind of catch to determine if the error file has been generated 
     
-    # settings for error analysis
-    #trunc = 3 # truncate all error distributions to 3 standard deviations 
+    print(sys.argv[2])
 
-    # generate error value (example of an additive error)
-    #dx1 =  gen.gaussian_error(0, toldx1, trunc)
-    #print(dx1)
-
-   
-
-
+    if len(sys.argv) < 2:
+        # generate YAML template and errored lattice
+        print("Template Generation Run")
+        time.sleep(1)
+        GPT_lat_err.lattice_replacer_template()
+    elif len(sys.argv) == 2:
+        print("Error Run")
+        time.sleep(1)
+        if os.path.exists(sys.argv[2]) == True:
+            print(sys.argv[2])
+        else:
+            print("Failed: YAML tolerance file not found.")
