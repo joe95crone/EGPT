@@ -5,6 +5,7 @@ import munch
 import yaml
 from itertools import chain
 import os
+import subprocess
 
 # generator for errors
 # rejection sampling to impose cut-off
@@ -57,26 +58,29 @@ class GPT_input_runner:
         # flatten tol_keys_list
         tol_keys_keys = list(chain.from_iterable(tol_keys_keys))
         # two arrays which I pattern as they'd appear in a GPT command then return 
-        return ','.join(["{0}={1}".format(tol_keys_keys_, err_vals_) for tol_keys_keys_, err_vals_ in zip(tol_keys_keys, err_vals)])
+        return ["{0}={1}".format(tol_keys_keys_, err_vals_) for tol_keys_keys_, err_vals_ in zip(tol_keys_keys, err_vals)]
         
     # function for running GPT
     #! careful of the GPT path and GPT license - how to set these properly??
     def GPT_run(self):
-        # filenames
-        GPToutfile = 'temp.gdf'
-        GPTinfile = self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1]
+        # filenames - James did some magic to point to a directory on D to avoid all of the stupid one drive link stuff GPT hated
+        GPToutfile = 'D:\\GPT_err\\temp.gdf'
+        GPTinfile = 'D:\\GPT_err\\' + self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1] 
         # function to get the error values in the correct pattern
         err_struct = self.error_val_structure()
-        # run GPT command
-        GPT_cmd = '"C:/Program Files/General Particle Tracer/bin/gpt.exe" -j 4 -o {0} {1} {2} GPTLICENSE=1384567269'
-        os.system(GPT_cmd.format(GPToutfile, GPTinfile, err_struct))
+        # run GPT command - need to add in the errors!!
+        GPT_cmd = [r'C:/Program Files/General Particle Tracer/bin/gpt.exe'] + ['-v'] + ['-o', GPToutfile] + [GPTinfile] + err_struct + ['GPTLICENSE=1384567269']
+        subprocess.call(GPT_cmd)
+
 
 # test space!
 #if __name__ == "__main__":
 
     # class initialization 
 #    GPTrunner = GPT_input_runner('200fC.in', 'GPTin_tolerance.yml')
-#    print(GPTrunner.error_val_structure())
+#    GPTrunner.GPT_run()
+
+    
 
     
 

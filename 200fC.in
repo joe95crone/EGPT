@@ -29,26 +29,26 @@ phi = pi * (crest + offset)/180 ;
 freq = 2998e6 ;
 ffac =  63.*1e6 ; 			# Nominal field strength
 w    = 2*pi*freq ;
-map1D_TM("wcs","z",0,"2.5cellgun.gdf","z","E",ffac,phi,w ) ;
+map1D_TM("wcs","z",0,"MAPS\2.5cellgun.gdf","z","E",ffac,phi,w ) ;
 
 ######### 4HC Cavity ###########
 f = 11994000000.;
 w00 = 2*pi*f;
 phi00 = -5.18/deg;
 ffac00 = 4380000.;
-map1D_TM( "wcs", "z", 0.14, "4cell_DCPx.gdf", "z","Ez", ffac00, phi00, w00);
+map1D_TM( "wcs", "z", 0.14, "MAPS\4cell_DCPx.gdf", "z","Ez", ffac00, phi00, w00);
 
 ######### Dechirper Cavity ###########
 f = 2998500000.;
 w01 = 2*pi*f;
 phi01 = -117.37/deg;
 ffac01 = 27260000.;
-map1D_TM( "wcs", "z", 0.52, "3cell_DCP.gdf", "z","Ez", ffac01, phi01, w01);
-map1D_B( "wcs", "z", 0.32, "10cm_sol_map.gdf", "z","Bz", 0.2004);
-map1D_B( "wcs", 0.1, 0, 0.32, 1, 0, 0, 0, 1, 0, "10cm_sol_map.gdf", "z","Bz", 0.2004); # ahhhhh
+map1D_TM( "wcs", "z", 0.52, "MAPS\3cell_DCP.gdf", "z","Ez", ffac01, phi01, w01);
+map1D_B( "wcs", "z", 0.32, "MAPS\10cm_sol_map.gdf", "z","Bz", 0.2004);
+map1D_B( "wcs", 0.1, 0, 0.32, 1, 0, 0, 0, 1, 0, "MAPS\10cm_sol_map.gdf", "z","Bz", 0.2004); # ahhhhh
 
-map1D_B( "wcs", "z", 0.67, "10cm_sol_map.gdf", "z","Bz", 0.1623);
-map1D_B( "wcs", "z", 0.92, "ob_lens.gdf", "z","Bz", 1.5);
+map1D_B( "wcs", "z", 0.67, "MAPS\10cm_sol_map.gdf", "z","Bz", 0.1623);
+map1D_B( "wcs", "z", 0.92, "MAPS\ob_lens.gdf", "z","Bz", 1.5);
 screen( "wcs", "I", 0.14);
 screen( "wcs", "I", 0.52);
 screen( "wcs", "I", 0.90179);

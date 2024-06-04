@@ -13,7 +13,7 @@ class GPT_error_mod:
         self.file_lines = self.file.readlines()
         # possible GPT element types, with no. maximum expected arguments
         self.ECSargs = 11
-        self.GPT_command = ['map1D_TM', 'map1D_B']
+        self.GPT_command = ['map1D_TM', 'map1D_B', 'Quadrupole', 'Sectorbend']
     
     def line_return(self):
         return self.file_lines
@@ -179,7 +179,6 @@ class GPT_error_mod:
 
 # test space!
 #if __name__ == "__main__":
-
     # class initialization 
 #    GPTerr = GPT_error_mod('200fC.in')
 
