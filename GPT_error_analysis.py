@@ -34,6 +34,8 @@ class GPT_analyse:
     # gets the time analysis file and returns as a series of munch dictionaries
     # use as time, pos, tout, screens = GPT_analyse.get_GDF_anaysis()
     def get_GDF_analysis(self):
+        # run the analysis
+        self.run_GDF_analysis(self)
         # data given using <dict>.<param>.value
         GDFtime = easygdf.load(self.GPT_time_file)
         # sort the data (originally as a list of dictionaries) into a munched nested dictionary (keyed on names) 

@@ -13,7 +13,7 @@ class GPT_error_mod:
         self.file_lines = self.file.readlines()
         # possible GPT element types, with no. maximum expected arguments
         self.ECSargs = 11
-        self.GPT_command = ['map1D_TM', 'map1D_B', 'Quadrupole', 'Sectorbend']
+        self.GPT_command = ['map1D_TM', 'map1D_B', 'quadrupole', 'sectorbend']
     
     def line_return(self):
         return self.file_lines
@@ -118,7 +118,8 @@ class GPT_error_mod:
             misalignparams.append('dx' + str(i))
             misalignparams.append('dy' + str(i))
             misalignparams.append('dz' + str(i))
-        err_param = sorted(misalignparams + fparams + dparams, key = lambda sub : sub[-1])
+        # sort using regex splitting on element number
+        err_param = sorted(misalignparams + fparams + dparams, key = lambda sub : int(re.split(r'\D+',sub)[-1]))
         return err_param
 
     # applies element replace to all identified elements then writes the errored lattice file
@@ -133,32 +134,33 @@ class GPT_error_mod:
                 err_param_ident.append(self.element_replace(ident_eles[0][ident_eles[2].index(i)], ident_eles[1][ident_eles[2].index(i)], ident_eles[3][ident_eles[2].index(i)])[1])
             else:
                 new_lattice.append(self.file_lines[i])
+
+        filename = self.infile.split('.')[0] + '_ERR' + '.' + self.infile.split('.')[-1]
         # write out the lattice file 
-        GPTwrite = open(self.infile.split('.')[0] + '_ERR' + '.' + self.infile.split('.')[-1], "a")
+        GPTwrite = open(filename, "w") # overwrites if previously generated!
         GPTwrite.writelines(new_lattice)
         GPTwrite.close()
         return self.error_param_format(err_param_ident)
     
     def parameter_name_sorter(self, error_param_names):
-        sort_param = []
-        sort_names = []
-        val = 1
+        sorted_params = []
+        sort_ele = []
+        ele_no = 1
         for param in error_param_names:
-            if int(param[-1]) == val:
-                sort_param.append(param)
-            else:   
-                sort_names.append(sort_param)
-                val +=1
-                sort_param = []
-                sort_param.append(param)
-        sort_names.append(sort_param)
-        return sort_names
+            # regex splitting on element numb
+            if int(re.split(r'\D+',param)[-1]) == ele_no:
+                sort_ele.append(param)
+            else:
+                sorted_params.append(sort_ele)
+                sort_ele = [] 
+                ele_no +=1
+        sorted_params.append(sort_ele)
+        return sorted_params
 
     def lattice_replacer_template(self):
         # run lattice replacer
         error_param_names = self.parameter_name_sorter(self.lattice_replacer())
         element_names_yaml = [self.element_types()[0][i] + "_" + str(self.element_types()[1][i]) for i in range(len(self.element_types()[0]))]
-
         # creating the template dictionary
         ele_err_dict = munch.Munch()
         for ele in range(len(element_names_yaml)):
@@ -171,7 +173,6 @@ class GPT_error_mod:
                 else:
                     ele_param_dict[error_param_names[ele][param]] = [1, 0, 'gaussian', 3]
             setattr(ele_err_dict, element_names_yaml[ele], ele_param_dict)
-
         # create YAML tolerance template
         with open('GPTin_tolerance_temp.yml', 'w') as tempfile:
             yaml.dump(munch.unmunchify(ele_err_dict), tempfile, sort_keys=False)

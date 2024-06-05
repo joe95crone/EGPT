@@ -19,6 +19,7 @@ import time
 # GPT error files (missing analysis package)
 import GPTin_error_modifier as GPTinmod # import the GPT lattice file (.in file) modifier
 import GPT_input_runner as GPTrun
+import GPT_error_analysis as GPTanalysis
 
 if __name__ == "__main__":
 
@@ -39,7 +40,12 @@ if __name__ == "__main__":
         print("Error Run")
         time.sleep(1)
         if os.path.exists(sys.argv[2]) == True:
+            # run the GPT file using the yaml tolerance file 
             GPTrunner = GPTrun.GPT_input_runner(sys.argv[1], sys.argv[2])
             GPTrunner.GPT_run()
+            # analyse the resulting GDF file (defaults to temp.gdf)
+            GPTanalysed = GPTanalysis.GPTanalyse()
+            GPTtime, GPTpos, GPTtouts, GPTscreens = GPTanalysed.get_GDF_analysis()
+
         else:
             print("Failed: YAML tolerance file not found.")
