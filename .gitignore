@@ -1,0 +1,5 @@
+# ignore the MAPS directory
+MAPS/
+
+# ignore all gdf files (too much data)
+*.gdf
