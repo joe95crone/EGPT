@@ -37,8 +37,8 @@ class GPT_input_runner:
     # read in the yaml file
     def input_reader(self):
         with open(self.inyaml, 'r') as infile:
-            tolerance = munch.munchify(yaml.safe_load(infile))
-            return tolerance
+            tolerance = munch.munchify(yaml.safe_load(infile))    
+        return tolerance
 
     # function for getting the errors and creating the structure
     def error_val_structure(self):
@@ -68,7 +68,7 @@ class GPT_input_runner:
         GPTinfile = 'D:\\GPT_err\\' + self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1] 
         # function to get the error values in the correct pattern
         err_struct = self.error_val_structure()
-        # run GPT command - need to add in the errors!!
+        # run GPT command
         GPT_cmd = [r'C:/Program Files/General Particle Tracer/bin/gpt.exe'] + ['-v'] + ['-o', GPToutfile] + [GPTinfile] + err_struct + ['GPTLICENSE=1384567269']
         subprocess.call(GPT_cmd)
 

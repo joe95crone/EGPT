@@ -44,7 +44,7 @@ if __name__ == "__main__":
             GPTrunner = GPTrun.GPT_input_runner(sys.argv[1], sys.argv[2])
             GPTrunner.GPT_run()
             # analyse the resulting GDF file (defaults to temp.gdf)
-            GPTanalysed = GPTanalysis.GPTanalyse()
+            GPTanalysed = GPTanalysis.GPT_analyse()
             GPTtime, GPTpos, GPTtouts, GPTscreens = GPTanalysed.get_GDF_analysis()
 
         else:

@@ -152,7 +152,8 @@ class GPT_error_mod:
                 sort_ele.append(param)
             else:
                 sorted_params.append(sort_ele)
-                sort_ele = [] 
+                sort_ele = []
+                sort_ele.append(param) 
                 ele_no +=1
         sorted_params.append(sort_ele)
         return sorted_params

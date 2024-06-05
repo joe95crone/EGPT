@@ -35,6 +35,11 @@ quadrupole_1:
   - gaussian
   - 3
 quadrupole_2:
+  dx2:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy2:
   - 0
   - 0
@@ -66,6 +71,11 @@ quadrupole_2:
   - gaussian
   - 3
 quadrupole_3:
+  dx3:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy3:
   - 0
   - 0
@@ -97,6 +107,11 @@ quadrupole_3:
   - gaussian
   - 3
 quadrupole_4:
+  dx4:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy4:
   - 0
   - 0
@@ -128,6 +143,11 @@ quadrupole_4:
   - gaussian
   - 3
 quadrupole_5:
+  dx5:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy5:
   - 0
   - 0
@@ -159,6 +179,11 @@ quadrupole_5:
   - gaussian
   - 3
 quadrupole_6:
+  dx6:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy6:
   - 0
   - 0
@@ -190,6 +215,11 @@ quadrupole_6:
   - gaussian
   - 3
 quadrupole_7:
+  dx7:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy7:
   - 0
   - 0
@@ -221,6 +251,11 @@ quadrupole_7:
   - gaussian
   - 3
 quadrupole_8:
+  dx8:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy8:
   - 0
   - 0
@@ -252,6 +287,11 @@ quadrupole_8:
   - gaussian
   - 3
 quadrupole_9:
+  dx9:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy9:
   - 0
   - 0
@@ -283,6 +323,11 @@ quadrupole_9:
   - gaussian
   - 3
 quadrupole_10:
+  dx10:
+  - 0
+  - 0
+  - gaussian
+  - 3
   dy10:
   - 0
   - 0

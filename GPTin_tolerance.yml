@@ -1,4 +1,4 @@
-map1D_TM_1:
+quadrupole_1:
   dx1:
   - 0
   - 100.0e-6
@@ -6,45 +6,35 @@ map1D_TM_1:
   - 3
   dy1:
   - 0
-  - 100.0e-6
+  - 0
   - gaussian
   - 3
   dz1:
   - 0
-  - 50.0e-6
+  - 0
   - gaussian
   - 3
-  f_14_1:
+  f_11_1:
   - 1
-  - 0.001
+  - 0
   - gaussian
   - 3
-  f_15_1:
+  f_12_1:
   - 1
-  - 0.001
+  - 0
   - gaussian
   - 3
-  f_16_1:
-  - 1
-  - 0.001
-  - gaussian
-  - 3
-  d_14_1:
+  d_11_1:
   - 0
   - 0
   - gaussian
   - 3
-  d_15_1:
+  d_12_1:
   - 0
   - 0
   - gaussian
   - 3
-  d_16_1:
-  - 0
-  - 0
-  - gaussian
-  - 3
-map1D_TM_2:
+quadrupole_2:
   dx2:
   - 0
   - 0
@@ -60,37 +50,27 @@ map1D_TM_2:
   - 0
   - gaussian
   - 3
-  f_14_2:
+  f_11_2:
   - 1
   - 0
   - gaussian
   - 3
-  f_15_2:
+  f_12_2:
   - 1
   - 0
   - gaussian
   - 3
-  f_16_2:
-  - 1
-  - 0
-  - gaussian
-  - 3
-  d_14_2:
+  d_11_2:
   - 0
   - 0
   - gaussian
   - 3
-  d_15_2:
+  d_12_2:
   - 0
   - 0
   - gaussian
   - 3
-  d_16_2:
-  - 0
-  - 0
-  - gaussian
-  - 3
-map1D_TM_3:
+quadrupole_3:
   dx3:
   - 0
   - 0
@@ -106,37 +86,27 @@ map1D_TM_3:
   - 0
   - gaussian
   - 3
-  f_14_3:
+  f_11_3:
   - 1
   - 0
   - gaussian
   - 3
-  f_15_3:
+  f_12_3:
   - 1
   - 0
   - gaussian
   - 3
-  f_16_3:
-  - 1
-  - 0
-  - gaussian
-  - 3
-  d_14_3:
+  d_11_3:
   - 0
   - 0
   - gaussian
   - 3
-  d_15_3:
+  d_12_3:
   - 0
   - 0
   - gaussian
   - 3
-  d_16_3:
-  - 0
-  - 0
-  - gaussian
-  - 3
-map1D_B_1:
+quadrupole_4:
   dx4:
   - 0
   - 0
@@ -152,17 +122,27 @@ map1D_B_1:
   - 0
   - gaussian
   - 3
-  f_14_4:
+  f_11_4:
   - 1
   - 0
   - gaussian
   - 3
-  d_14_4:
+  f_12_4:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_4:
   - 0
   - 0
   - gaussian
   - 3
-map1D_B_2:
+  d_12_4:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_5:
   dx5:
   - 0
   - 0
@@ -178,17 +158,27 @@ map1D_B_2:
   - 0
   - gaussian
   - 3
-  f_14_5:
+  f_11_5:
   - 1
   - 0
   - gaussian
   - 3
-  d_14_5:
+  f_12_5:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_5:
   - 0
   - 0
   - gaussian
   - 3
-map1D_B_3:
+  d_12_5:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_6:
   dx6:
   - 0
   - 0
@@ -204,17 +194,27 @@ map1D_B_3:
   - 0
   - gaussian
   - 3
-  f_14_6:
+  f_11_6:
   - 1
   - 0
   - gaussian
   - 3
-  d_14_6:
+  f_12_6:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_6:
   - 0
   - 0
   - gaussian
   - 3
-map1D_B_4:
+  d_12_6:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_7:
   dx7:
   - 0
   - 0
@@ -230,12 +230,130 @@ map1D_B_4:
   - 0
   - gaussian
   - 3
-  f_14_7:
+  f_11_7:
   - 1
   - 0
   - gaussian
   - 3
-  d_14_7:
+  f_12_7:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_7:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  d_12_7:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_8:
+  dx8:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dy8:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dz8:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  f_11_8:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  f_12_8:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_8:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  d_12_8:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_9:
+  dx9:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dy9:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dz9:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  f_11_9:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  f_12_9:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_9:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  d_12_9:
+  - 0
+  - 0
+  - gaussian
+  - 3
+quadrupole_10:
+  dx10:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dy10:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  dz10:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  f_11_10:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  f_12_10:
+  - 1
+  - 0
+  - gaussian
+  - 3
+  d_11_10:
+  - 0
+  - 0
+  - gaussian
+  - 3
+  d_12_10:
   - 0
   - 0
   - gaussian
