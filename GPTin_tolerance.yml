@@ -6,7 +6,7 @@ quadrupole_1:
   - 3
   dy1:
   - 0
-  - 0
+  - 100.e-6
   - gaussian
   - 3
   dz1:
@@ -21,7 +21,7 @@ quadrupole_1:
   - 3
   f_12_1:
   - 1
-  - 0
+  - 0.01
   - gaussian
   - 3
   d_11_1:
@@ -37,12 +37,12 @@ quadrupole_1:
 quadrupole_2:
   dx2:
   - 0
-  - 0
+  - 100.0e-6
   - gaussian
   - 3
   dy2:
   - 0
-  - 0
+  - 100.0e-6
   - gaussian
   - 3
   dz2:
@@ -57,7 +57,7 @@ quadrupole_2:
   - 3
   f_12_2:
   - 1
-  - 0
+  - 0.01
   - gaussian
   - 3
   d_11_2:
@@ -73,12 +73,12 @@ quadrupole_2:
 quadrupole_3:
   dx3:
   - 0
-  - 0
+  - 100.0e-6
   - gaussian
   - 3
   dy3:
   - 0
-  - 0
+  - 100.0e-6
   - gaussian
   - 3
   dz3:
