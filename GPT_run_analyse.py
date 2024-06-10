@@ -28,10 +28,10 @@ def uniform_error(mean, std, trunc):
     return sample
 
 class GPT_run_analyse:
-    counter = 0
-    def __init__(self, GPTin, inyaml):
-        # counter for each time class in initialised - can append to filenames for multiple runs?? best to generate multiple runs after yaml template has been read
-        self.counter +=1
+    # defaults to single trial error analysis
+    def __init__(self, GPTin, inyaml, ntrial=1):
+        # no trials
+        self.ntrial = int(ntrial)
 
         # yaml tolerance file
         self.inyaml = str(inyaml)
@@ -72,50 +72,69 @@ class GPT_run_analyse:
         tol_keys_keys = list(chain.from_iterable(tol_keys_keys))
         # two arrays which I pattern as they'd appear in a GPT command then return 
         return ["{0}={1}".format(tol_keys_keys_, err_vals_) for tol_keys_keys_, err_vals_ in zip(tol_keys_keys, err_vals)]
-        
+    
     # function for running GPT
     #! careful of the GPT path and GPT license - how to set these properly??
-    def GPT_run(self):
+    def GPT_run(self, trial):
         # function to get the error values in the correct pattern
         err_struct = self.error_val_structure()
+        # get the output file name
+        trial_outfile = self.GPToutfile.split('.')[0] + "_" +  str(trial) + "." + self.GPToutfile.split('.')[1]
         # run GPT command
-        GPT_cmd = [r'C:/Program Files/General Particle Tracer/bin/gpt.exe'] + ['-v'] + ['-o', self.GPToutfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=1384567269']
+        GPT_cmd = [r'C:/Program Files/General Particle Tracer/bin/gpt.exe'] + ['-v'] + ['-o', trial_outfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=1384567269']
         subprocess.call(GPT_cmd)
 
         # run the analysis of the GDF output file (time & position)
-    def run_GDF_analysis(self):
-       # time-like analysis
+    def run_GDF_analysis(self, trial):
+        # paths
+        time_trial_outfile = self.GPT_time_file.split('.')[0] + "_" + str(trial) + "." + self.GPT_time_file.split('.')[1]
+        pos_trial_outfile = self.GPT_pos_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_pos_file.split('.')[1]
+        trial_outfile = self.GPToutfile.split('.')[0] + "_" + str(trial) + "."  + self.GPToutfile.split('.')[1]
+
+        # time-like analysis
         time_output = ['time', 'avgx', 'avgy', 'avgz', 'stdx', 'stdBx', 'stdy', 'stdBy', 'stdz', 'nemixrms', 'nemiyrms', 'nemizrms', 'numpar', 'nemirrms', 'avgG', 'avgp', 'stdG', 'avgBx', 'avgBy', 'avgBz', 'CSalphax', 'CSalphay', 'CSbetax', 'CSbetay', 'avgfBx', 'avgfEx', 'avgfBy', 'avgfEy', 'avgfBz', 'avgfEz']
-        GPT_time_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-v'] + ['-o', self.GPT_time_file] + [self.GPToutfile] + time_output
+        GPT_time_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-v'] + ['-o', time_trial_outfile] + [trial_outfile] + time_output
         subprocess.call(GPT_time_analysis_cmd)
 
         # position-like analysis
         pos_output = ['position', 'avgx', 'avgy', 'avgz', 'stdx', 'stdBx', 'stdy', 'stdBy', 'stdz', 'stdt', 'nemixrms', 'nemiyrms', 'nemizrms', 'numpar', 'nemirrms', 'avgG', 'avgp', 'stdG', 'avgt', 'avgBx', 'avgBy', 'avgBz', 'CSalphax', 'CSalphay', 'CSbetax', 'CSbetay']
-        GPT_pos_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-v'] + ['-o', self.GPT_pos_file] + [self.GPToutfile] + pos_output
+        GPT_pos_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-v'] + ['-o', pos_trial_outfile] + [trial_outfile] + pos_output
         subprocess.call(GPT_pos_analysis_cmd)
 
     # gets the time analysis file and returns as a series of munch dictionaries
     # use as time, pos, tout, screens = GPT_analyse.get_GDF_anaysis()
-    def get_GDF_analysis(self):
+    def get_GDF_analysis(self, trial):
+        self.run_GDF_analysis(trial)
+        
+        #paths
+        time_trial_outfile = self.GPT_time_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_time_file.split('.')[1]
+        pos_trial_outfile = self.GPT_pos_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_pos_file.split('.')[1]
+        trial_outfile = self.GPToutfile.split('.')[0] + "_" + str(trial) + "."  + self.GPToutfile.split('.')[1]
+
         # data given using <dict>.<param>.value
-        GDFtime = easygdf.load(self.GPT_time_file)
+        GDFtime = easygdf.load(time_trial_outfile)
         # sort the data (originally as a list of dictionaries) into a munched nested dictionary (keyed on names) 
         GDFtime = munch.munchify({item['name']:item for item in GDFtime['blocks']})
 
-        GDFpos = easygdf.load(self.GPT_pos_file)
+        GDFpos = easygdf.load(pos_trial_outfile)
         # sort the data (originally as a list of dictionaries) into a munched nested dictionary (keyed on names) 
         GDFpos = munch.munchify({item['name']:item for item in GDFpos['blocks']})
 
         # data given using <dict>[pos].<param>
-        GDFbeam = easygdf.load_screens_touts(self.GPToutfile)
+        GDFbeam = easygdf.load_screens_touts(trial_outfile)
         GDFscreens = munch.munchify(GDFbeam['screens'])
         GDFtouts = munch.munchify(GDFbeam['touts'])
         return GDFtime, GDFpos, GDFtouts, GDFscreens
 
+    # run multiple or single error runs
+    # returns data in an array the length of the no. trials
     def GPT_run_get_analysis(self):
-        self.GPT_run()
-        self.run_GDF_analysis()
-        return self.get_GDF_analysis()
+            multi_analysis = []
+            for i in range(1,self.ntrial+1):
+                self.GPT_run(i)
+                multi_analysis.append(self.get_GDF_analysis(i))
+            return multi_analysis
+
 
 # test space!
 #if __name__ == "__main__":
