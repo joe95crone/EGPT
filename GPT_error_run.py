@@ -46,7 +46,6 @@ if __name__ == "__main__":
             except IndexError: 
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
                 # running and analysing the results of the single error run
-                GPT_run.GPT_run_get_analysis()
                 GPTtime, GPTpos, GPTtouts, GPTscreens = GPT_run.GPT_run_get_analysis()[0]
                 GPT_plots = GPTplt.GPT_plotting(GPTtime, GPTpos, GPTtouts, GPTscreens)
                 GPT_plots.beam_size()

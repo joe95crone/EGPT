@@ -1,5 +1,8 @@
 # ignore the MAPS directory
 MAPS/
 
+# ignore the plots directory
+FIGS/
+
 # ignore all gdf files (too much data)
 *.gdf

@@ -61,23 +61,24 @@ class GPT_error_mod:
             ele_split = ele_split[:ele_split.index("; ")]
         ele_split.append(";\n")
         return ele_split
-    
+
     # input misalignment based on GPT ECS format i.e. ECS replacer
-    #! this will need modifying for any bending elements
-    #! eventually change the end part of full_ECS to deal with rotations   
+    #! this will need a special case for any bending elements
+    # end part of full_ECS deal with rotations about the z axis. Other rotations are not supported, yet! This carries over any other rotations
     def ECS_replacer(self, ele_name, instance, ele_num):
         ele_split = self.element_splitter(ele_name, instance)
+        # 'z'-type and full-type ECS are of different length and split differently because 'wcs','z',oz against 'wcs',ox,oy,oz (extra charater) 
         if ele_split[2] == '"z"':
             # full ECS with misalignment and ccs label, z position ported over
-            full_ECS = [ele_split[1], "0 + dx{0}".format(ele_num), "0 + dy{0}".format(ele_num), ele_split[3] + " + dz{0}".format(ele_num), "1", "0", "0","0","1","0"]
-            # remove old ECS
+            full_ECS = [ele_split[1], "0 + dx{0}".format(ele_num), "0 + dy{0}".format(ele_num), ele_split[3] + " + dz{0}".format(ele_num), "cos(th{0})".format(ele_num), "-sin(th{0})".format(ele_num), "0", "sin(th{0})".format(ele_num), "cos(th{0})".format(ele_num), "0"]
+            # # remove old ECS
             del ele_split[1:4]
             # add new ECS
             ele_split[1:1] = full_ECS
             return ele_split
         else:
-            # full ECS with misalignment and ccs label, all othe x, y, z offsets ported
-            full_ECS = [ele_split[1], ele_split[2] + " + dx{0}".format(ele_num), ele_split[3] + " + dy{0}".format(ele_num), ele_split[4] + " + dz{0}".format(ele_num), "1", "0", "0","0","1","0"]
+            # full ECS with misalignment and ccs label, all other x, y, z offsets and rotations ported
+            full_ECS = [ele_split[1], ele_split[2] + " + dx{0}".format(ele_num), ele_split[3] + " + dy{0}".format(ele_num), ele_split[4] + " + dz{0}".format(ele_num), ele_split[5] + "+ cos(th{0})".format(ele_num), ele_split[6] + " -sin(th{0})".format(ele_num), ele_split[7] + " + 0", ele_split[8] + "+ sin(th{0})".format(ele_num), ele_split[9] + " + cos(th{0})".format(ele_num), ele_split[10] + " + 0"]
             #remove old ECS 
             del ele_split[1:11]
             # add new ECS
@@ -120,6 +121,7 @@ class GPT_error_mod:
             misalignparams.append('dx' + str(i))
             misalignparams.append('dy' + str(i))
             misalignparams.append('dz' + str(i))
+            misalignparams.append('th' + str(i))
         # sort using regex splitting on element number
         err_param = sorted(misalignparams + fparams + dparams, key = lambda sub : int(re.split(r'\D+',sub)[-1]))
         return err_param
@@ -171,7 +173,7 @@ class GPT_error_mod:
             ele_param_dict = munch.Munch()
             for param in range(len(error_param_names[ele])):
                 # mean, tolerance, error type, truncation (no. sigma)
-                if error_param_names[ele][param][0] == 'd':
+                if error_param_names[ele][param][0] == 'd' or error_param_names[ele][param][0] == 't':
                     ele_param_dict[error_param_names[ele][param]] = [0, 0, 'gaussian', 3]
                 else:
                     ele_param_dict[error_param_names[ele][param]] = [1, 0, 'gaussian', 3]

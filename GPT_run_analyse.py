@@ -130,7 +130,7 @@ class GPT_run_analyse:
     # returns data in an array the length of the no. trials
     def GPT_run_get_analysis(self):
             multi_analysis = []
-            for i in range(1,self.ntrial+1):
+            for i in range(1, self.ntrial+1):
                 self.GPT_run(i)
                 multi_analysis.append(self.get_GDF_analysis(i))
             return multi_analysis
