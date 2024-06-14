@@ -42,14 +42,17 @@ if __name__ == "__main__":
             # run the GPT file using the yaml tolerance file - use sys.argv[3] for the no. trials
             try:
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2], sys.argv[3])
-                run_data = GPT_run.GPT_run_get_analysis()
-                print(run_data.keys())
+                
             except IndexError: 
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
                 # running and analysing the results of the single error run
                 run_data = GPT_run.GPT_run_get_analysis()
-                #GPT_plots = GPTplt.GPT_plotting(GPTtime, GPTpos, GPTtouts, GPTscreens)
-                #GPT_plots.beam_size()
+            # get the analysis    
+            run_data = GPT_run.GPT_run_get_analysis()
+            # do plotting
+            GPT_plots = GPTplt.GPT_plotting(run_data)
+            GPT_plots.beam_size()
+            GPT_plots.trajectory()
         else:
             print("Failed: YAML tolerance file not found.")
     else:
