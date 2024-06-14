@@ -124,16 +124,19 @@ class GPT_run_analyse:
         GDFbeam = easygdf.load_screens_touts(trial_outfile)
         GDFscreens = munch.munchify(GDFbeam['screens'])
         GDFtouts = munch.munchify(GDFbeam['touts'])
-        return GDFtime, GDFpos, GDFtouts, GDFscreens
+        GDF_analysis = munch.munchify({'time': GDFtime, 'pos': GDFpos, 'touts': GDFtouts, 'screens': GDFscreens})
+        return GDF_analysis
 
     # run multiple or single error runs
     # returns data in an array the length of the no. trials
     def GPT_run_get_analysis(self):
-            multi_analysis = []
+            #multi_analysis = []
+            multi_analysis = {}
             for i in range(1, self.ntrial+1):
                 self.GPT_run(i)
-                multi_analysis.append(self.get_GDF_analysis(i))
-            return multi_analysis
+                multi_analysis['trial_{0}'.format(i)] = self.get_GDF_analysis(i)
+                #multi_analysis.append(self.get_GDF_analysis(i))            
+            return munch.munchify(multi_analysis)
 
 
 # test space!

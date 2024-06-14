@@ -9,6 +9,7 @@ from scipy import constants
 
 # plotting & analysis functions
 # when doing multiple trials I need to change this
+# this is now out of date!!
 class GPT_plotting:
     def __init__(self, time, pos, touts, screens):
         self.time = time

@@ -67,7 +67,7 @@ class GPT_error_mod:
     # end part of full_ECS deal with rotations about the z axis. Other rotations are not supported, yet! This carries over any other rotations
     def ECS_replacer(self, ele_name, instance, ele_num):
         ele_split = self.element_splitter(ele_name, instance)
-        # 'z'-type and full-type ECS are of different length and split differently because 'wcs','z',oz against 'wcs',ox,oy,oz (extra charater) 
+        # 'z'-type and full-type ECS are of different length and split differently because 'wcs','z',oz against 'wcs',ox,oy,oz (extra character) 
         if ele_split[2] == '"z"':
             # full ECS with misalignment and ccs label, z position ported over
             full_ECS = [ele_split[1], "0 + dx{0}".format(ele_num), "0 + dy{0}".format(ele_num), ele_split[3] + " + dz{0}".format(ele_num), "cos(th{0})".format(ele_num), "-sin(th{0})".format(ele_num), "0", "sin(th{0})".format(ele_num), "cos(th{0})".format(ele_num), "0"]
