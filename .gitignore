@@ -9,6 +9,7 @@ FIGS/
 
 # ignore all GPT input and gdf files (too much data) - the EPAC ones have been included as 
 *.gdf
+*.in
 
 # ignore the yaml template files generated
 *.yml
