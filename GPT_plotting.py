@@ -18,6 +18,16 @@ class GPT_plotting:
         self.run_keys = list(run_data.keys())
 
     # ANALYSIS FUNCTIONS
+    def mean_analysis_value(self, analysis_param):
+        # step over each timestep
+        mean_analysis = []
+        for step in range(self.trial_1.time.avgz.value):
+            # for each trial
+            mean_analysis_step = []
+            for i in range(1,self.ntrials+1):
+                mean_analysis_step.append(getattr(getattr(self.run_data, self.run_keys[i-1]).time, analysis_param).value[step])
+            
+
 
     # PLOTTING FUNCTIONS
     # beam size plot
