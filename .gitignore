@@ -13,3 +13,6 @@ FIGS/
 
 # ignore the yaml template files generated
 *.yml
+
+# ignore the dat files that are generate
+*.dat
