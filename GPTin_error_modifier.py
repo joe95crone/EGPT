@@ -18,11 +18,15 @@ class GPT_error_mod:
         # isectormagnet, sectormagnet have fromCCS toCCS format - requires special handling
         self.GPT_command = ['TE011cylcavity','TE011gauss','TE110gauss','TErectcavity','TM010cylcavity','TM110gauss','TM110cylcavity','TM010gauss','TMrectcavity','trwcell','trwlinac','trwlinbm','circlecharge','ecyl','ehole','erect','linecharge','platecharge','pointcharge','barmagnet','Bmultipole','bzsolenoid','isectormagnet','linecurrent','magline','magplane','magdipole','magpoint','quadrupole','rectcoil','rectmagnet','sectormagnet','sextupole','solenoid','map1D_B','map1D_E','map1D_TM','map2D_B','map2D_E','map2D_Et','map2Dr_E','map2D_V','map25D_E','map25D_B','map25D_TM','map3D_E','map3D_TM','map3D_Ecomplex','map3D_Hcomplex','map3D_V','map3D_B','map3D_remove','forwardscatter','copperscatter','scatterbitmap','scattercone','scatteriris','scatterpipe','scatterplate','scattersphere','scattertorus','multislit','drift','gauss00mf','undueqfo','unduplan','wakefield']
     
+    # helper function
+    # returns lattice file
     def line_return(self):
         return self.file_lines
     
+    # helper function
+    # returns the elements supported by GPT_err
     def supported_elements(self):
-        return 
+        return self.GPT_command
     
     # find the element types that are in the list and their number of instances
     # first instance is the zeroth instance (python numbering)

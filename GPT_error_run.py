@@ -28,7 +28,7 @@ if __name__ == "__main__":
     GPT_lat_err = GPTinmod.GPT_error_mod(init_GPT_file)
 
     # run as python GPT_error_run.py <GPT_infile>.in for template generation
-    # run as python GPT_error_run.py <GPT_infile>.in <tolerance_file>.yml (<trials>) for error run - no trials argument results in a single error run
+    # run as python GPT_error_run.py <GPT_infile>.in <tolerance_file>.yml (<trials>) (<keep_beam>) for error run - no trials argument results in a single error run
     # can also get full beam out if keep_beam = True is set, defaults to false
 
     if len(sys.argv) < 3:
@@ -47,15 +47,16 @@ if __name__ == "__main__":
             except IndexError: 
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
             # get the analysis    
-            #run_data = GPT_run.GPT_run_get_analysis()
+            run_data = GPT_run.GPT_run_get_analysis()
             #run_data = GPT_run.get_analysis_only()
 
-            # do plotting (time-like only currently)
-            #GPT_plots = GPTplt.GPT_plotting(run_data)
+            # do plotting/analysis 
+            GPT_plots = GPTplt.GPT_plotting(run_data)
+            #GPT_plots.trial_energy_plot()
             
-            #GPT_plots.trial_energy()
-            #GPT_plots.beam_size()
-            #GPT_plots.trajectory()
+            # standard plotting (time-like only currently)
+            GPT_plots.beam_size()
+            GPT_plots.trajectory()
         else:
             print("Failed: YAML tolerance file not found.")
     else:

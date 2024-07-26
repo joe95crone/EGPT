@@ -1,11 +1,13 @@
 # we need to separate out some of the big files like maps, gdf files from the commit
 # some files, like example lattices (.in files) and tolerance files (.yml files) are kept in as an example, but we don't want all 
 
-# ignore the MAPS directory
+# ignore the MAPS directories
 MAPS/
+2CAV/
 
 # ignore the plots directory
 FIGS/
+
 
 # ignore all GPT input and gdf files (too much data) - the EPAC ones have been included as 
 *.gdf
