@@ -4,7 +4,9 @@
 # ignore the MAPS directories
 MAPS/
 
-# ignore the plots directory
+# ignore the plots + data directories
+2CAV_CLARA/
+3CAV_CLARA/
 FIGS/
 
 

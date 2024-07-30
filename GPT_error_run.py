@@ -47,8 +47,8 @@ if __name__ == "__main__":
             except IndexError: 
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
             # get the analysis    
-            run_data = GPT_run.GPT_run_get_analysis()
-            #run_data = GPT_run.get_analysis_only()
+            #run_data = GPT_run.GPT_run_get_analysis()
+            run_data = GPT_run.get_analysis_only('3CAV_CLARA\\')
 
             # do plotting/analysis 
             GPT_plots = GPTplt.GPT_plotting(run_data)

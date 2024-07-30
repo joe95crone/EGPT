@@ -59,7 +59,6 @@ class GPT_run_analyse:
         with open('GPT_config.yml', 'r') as GPTconfigfile:
             GPTconfig = munch.munchify(yaml.safe_load(GPTconfigfile))
         self.GPTpath = GPTconfig.location[0]
-        print(self.GPTpath)
         self.GPTlicense = GPTconfig.license_num[0]
 
     # read in the yaml file
@@ -127,11 +126,11 @@ class GPT_run_analyse:
 
     # gets the time analysis file and returns as a series of munch dictionaries
     # use as time, pos, tout, screens = GPT_analyse.get_GDF_anaysis()
-    def get_GDF_analysis(self, trial):
+    def get_GDF_analysis(self, trial, datapath=''):
         #paths
-        time_trial_outfile = self.GPT_time_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_time_file.split('.')[1]
-        pos_trial_outfile = self.GPT_pos_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_pos_file.split('.')[1]
-        trial_outfile = self.GPToutfile.split('.')[0] + "_" + str(trial) + "."  + self.GPToutfile.split('.')[1]
+        time_trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_time" + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
+        pos_trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_pos" + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
+        trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
 
         # data given using <dict>.<param>.value
         GDFtime = easygdf.load(time_trial_outfile)
@@ -175,10 +174,11 @@ class GPT_run_analyse:
         return munch.munchify(multi_analysis)
     
     # function for getting the data if the run has already been done (accessing only analysis functions) 
-    def get_analysis_only(self):
+    # specifying a data path allows plotting data from files (give path from cwd)
+    def get_analysis_only(self, datapath=''):
         multi_analysis = {}
         for trial in range(1, self.ntrial + 1):
-            multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial)          
+            multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial, datapath)          
         return munch.munchify(multi_analysis)
 
 # test space!
