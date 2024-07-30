@@ -9,8 +9,6 @@ from scipy import constants
 import numpy as np
  
 # plotting & analysis functions
-# when doing multiple trials I need to change this
-# this is now out of date!!
 class GPT_plotting:
     def __init__(self, run_data):
         self.run_data = run_data
@@ -61,13 +59,18 @@ class GPT_plotting:
         energy_vals = [[getattr(self.run_data, self.run_keys[i-1]).pos.avgG.value[pos_index] for i in range(1, self.ntrials+1)] for pos_index in indexes]
         energy_vals = np.array(energy_vals)*constants.value('electron mass energy equivalent in MeV') - constants.value('electron mass energy equivalent in MeV')
         
+        energy_spread_vals = [[getattr(self.run_data, self.run_keys[i-1]).pos.stdG.value[pos_index] for i in range(1, self.ntrials+1)] for pos_index in indexes]
+        rel_energy_spread_vals = np.array(energy_spread_vals)/np.array(energy_vals)
+
         mean_energy_vals = np.array([np.mean(energy_vals[i,:]) for i in range(len(indexes))])
         rms_energy_deviation = np.array([np.sqrt(np.mean((np.mean(energy_vals[i,:]) - energy_vals[i,:])**2)) for i in range(len(indexes))])
         rel_energy_deviation = rms_energy_deviation/mean_energy_vals*100
 
+        mean_rel_energy_spread_vals = np.array([np.mean(rel_energy_spread_vals[i,:]) for i in range(len(indexes))])
+        rms_rel_energy_spread_variation = np.array([np.sqrt(np.mean((np.mean(rel_energy_spread_vals[i,:]) - rel_energy_spread_vals[i,:])**2)) for i in range(len(indexes))])*100
+
         plt.figure(1)
         plt.plot(position, mean_energy_vals, c='red')
-
         plt.title('Mean Energy (Position-like)')
         plt.xlabel('s [m]')
         plt.ylabel('Mean Energy [MeV]')
@@ -80,6 +83,19 @@ class GPT_plotting:
         plt.ylabel('Rel. Rms (1$\mathregular{\sigma}$) Energy Deviation [%]')
         plt.savefig('FIGS/RUEDI_Imaging_Rel_Energy_Deviation.png')
 
+        plt.figure(3)
+        plt.plot(position, mean_rel_energy_spread_vals, c='red')
+        plt.title('Mean Rel. Energy Spread (Position-like)')
+        plt.xlabel('s [m]')
+        plt.ylabel('Mean Rms Rel. Energy Spread [%]')
+        plt.savefig('FIGS/RUEDI_Imaging_Mean_Energy_Spread.png')
+
+        plt.figure(4)
+        plt.plot(position, rms_rel_energy_spread_variation, c='blue')
+        plt.title('Rms Rel. Energy Spread Deviation (Position-like)')
+        plt.xlabel('s [m]')
+        plt.ylabel('Rms (1$\mathregular{\sigma}$) Rel. Energy Spread Deviation [%]')
+        plt.savefig('FIGS/RUEDI_Imaging_Rel_Energy_Spread_Deviation.png')
         plt.show()
 
     # PLOTTING FUNCTIONS

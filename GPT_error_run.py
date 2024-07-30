@@ -52,11 +52,11 @@ if __name__ == "__main__":
 
             # do plotting/analysis 
             GPT_plots = GPTplt.GPT_plotting(run_data)
-            #GPT_plots.trial_energy_plot()
+            GPT_plots.trial_energy_plot()
             
             # standard plotting (time-like only currently)
-            GPT_plots.beam_size()
-            GPT_plots.trajectory()
+            #GPT_plots.beam_size()
+            #GPT_plots.trajectory()
         else:
             print("Failed: YAML tolerance file not found.")
     else:

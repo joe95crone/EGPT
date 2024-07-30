@@ -3,7 +3,6 @@
 
 # ignore the MAPS directories
 MAPS/
-2CAV/
 
 # ignore the plots directory
 FIGS/
@@ -15,6 +14,7 @@ FIGS/
 
 # ignore the yaml template files generated
 *.yml
+!GPT_congif.yml
 
 # ignore the dat files that are generate
 *.dat

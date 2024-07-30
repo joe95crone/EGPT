@@ -38,19 +38,29 @@ class GPT_run_analyse:
         # no trials
         self.ntrial = int(ntrial)
 
+        # paths
+        #self.path = 'D:\\GPT_err\\'
+        self.path = os.getcwd() + '\\'
+
         # yaml tolerance file
-        self.inyaml = str(inyaml)
+        self.inyaml = self.path + str(inyaml)
         
         # initial GPT in file
         self.GPTin = str(GPTin)
-        self.GPTinfile = 'D:\\GPT_err\\' + self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1]
+        self.GPTinfile = self.path + self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1]
 
-        self.path = 'D:\\GPT_err\\'
+        # output GPT files
         self.GDFfile = 'temp.gdf'
-        
         self.GPToutfile = self.path + self.GDFfile
         self.GPT_time_file = self.GPToutfile.split('.')[0] + "_time." + self.GPToutfile.split('.')[1]
         self.GPT_pos_file = self.GPToutfile.split('.')[0] + '_pos.' + self.GPToutfile.split('.')[1]
+
+        # gpt details
+        with open('GPT_config.yml', 'r') as GPTconfigfile:
+            GPTconfig = munch.munchify(yaml.safe_load(GPTconfigfile))
+        self.GPTpath = GPTconfig.location[0]
+        print(self.GPTpath)
+        self.GPTlicense = GPTconfig.license_num[0]
 
     # read in the yaml file
     def input_reader(self):
@@ -95,7 +105,7 @@ class GPT_run_analyse:
         # get the output file name
         trial_outfile = self.GPToutfile.split('.')[0] + "_" +  str(trial) + "." + self.GPToutfile.split('.')[1]
         # run GPT command
-        GPT_cmd = [r'C:/Program Files/General Particle Tracer/bin/gpt.exe'] + ['-o', trial_outfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=1384567269']
+        GPT_cmd = [self.GPTpath + 'gpt.exe'] + ['-o', trial_outfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=' + str(self.GPTlicense)]
         subprocess.call(GPT_cmd)
 
         # run the analysis of the GDF output file (time & position)
@@ -107,12 +117,12 @@ class GPT_run_analyse:
 
         # time-like analysis
         time_output = ['time', 'avgx', 'avgy', 'avgz', 'stdx', 'stdBx', 'stdy', 'stdBy', 'stdz', 'nemixrms', 'nemiyrms', 'nemizrms', 'numpar', 'nemirrms', 'avgG', 'avgp', 'stdG', 'avgBx', 'avgBy', 'avgBz', 'CSalphax', 'CSalphay', 'CSbetax', 'CSbetay', 'avgfBx', 'avgfEx', 'avgfBy', 'avgfEy', 'avgfBz', 'avgfEz']
-        GPT_time_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-o', time_trial_outfile] + [trial_outfile] + time_output
+        GPT_time_analysis_cmd = [self.GPTpath + 'gdfa.exe'] + ['-o', time_trial_outfile] + [trial_outfile] + time_output
         subprocess.call(GPT_time_analysis_cmd)
 
         # position-like analysis
         pos_output = ['position', 'avgx', 'avgy', 'avgz', 'stdx', 'stdBx', 'stdy', 'stdBy', 'stdz', 'stdt', 'nemixrms', 'nemiyrms', 'nemizrms', 'numpar', 'nemirrms', 'avgG', 'avgp', 'stdG', 'avgt', 'avgBx', 'avgBy', 'avgBz', 'CSalphax', 'CSalphay', 'CSbetax', 'CSbetay']
-        GPT_pos_analysis_cmd = [r'C:/Program Files/General Particle Tracer/bin/gdfa.exe'] + ['-o', pos_trial_outfile] + [trial_outfile] + pos_output
+        GPT_pos_analysis_cmd = [self.GPTpath + 'gdfa.exe'] + ['-o', pos_trial_outfile] + [trial_outfile] + pos_output
         subprocess.call(GPT_pos_analysis_cmd)
 
     # gets the time analysis file and returns as a series of munch dictionaries
@@ -164,7 +174,7 @@ class GPT_run_analyse:
             multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial)          
         return munch.munchify(multi_analysis)
     
-    # function for getting the data if the run has already been done (accessing only analysis functions)
+    # function for getting the data if the run has already been done (accessing only analysis functions) 
     def get_analysis_only(self):
         multi_analysis = {}
         for trial in range(1, self.ntrial + 1):

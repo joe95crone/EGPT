@@ -5,11 +5,14 @@ from itertools import chain
 import munch
 import yaml
 
+import os
+
 class GPT_error_mod:
     def __init__(self, filename):
         # read file
         self.infile = str(filename)
-        self.file = open(self.infile, 'r')
+        self.path = os.getcwd() + '\\'
+        self.file = open(self.path + self.infile, 'r')
         self.file_lines = self.file.readlines()
         # possible GPT element types, with no. maximum expected arguments
         self.ECSargs = 11
