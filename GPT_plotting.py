@@ -64,10 +64,10 @@ class GPT_plotting:
 
         mean_energy_vals = np.array([np.mean(energy_vals[i,:]) for i in range(len(indexes))])
         rms_energy_deviation = np.array([np.sqrt(np.mean((np.mean(energy_vals[i,:]) - energy_vals[i,:])**2)) for i in range(len(indexes))])
-        rel_energy_deviation = rms_energy_deviation/mean_energy_vals*100
+        rel_energy_deviation = (rms_energy_deviation/mean_energy_vals)*100
 
         mean_rel_energy_spread_vals = np.array([np.mean(rel_energy_spread_vals[i,:]) for i in range(len(indexes))])
-        rms_rel_energy_spread_variation = np.array([np.sqrt(np.mean((np.mean(rel_energy_spread_vals[i,:]) - rel_energy_spread_vals[i,:])**2)) for i in range(len(indexes))])*100
+        rms_rel_energy_spread_variation = (np.array([np.sqrt(np.mean((np.mean(rel_energy_spread_vals[i,:]) - rel_energy_spread_vals[i,:])**2)) for i in range(len(indexes))])/mean_rel_energy_spread_vals)*100
 
         plt.figure(1)
         plt.plot(position, mean_energy_vals, c='red')
