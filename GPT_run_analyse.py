@@ -181,13 +181,6 @@ class GPT_run_analyse:
             multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial, datapath)          
         return munch.munchify(multi_analysis)
 
-# test space!
-#if __name__ == "__main__":
-
-    # class initialization 
-#    GPTrunner = GPT_input_runner('200fC.in', 'GPTin_tolerance.yml')
-#    GPTrunner.GPT_run()
-
     
 
     

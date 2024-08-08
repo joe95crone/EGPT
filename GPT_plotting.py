@@ -123,5 +123,3 @@ class GPT_plotting:
         #plt.legend()
         plt.savefig('FIGS\Trajectory.png')
         plt.show()
-        
-

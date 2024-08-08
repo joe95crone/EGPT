@@ -36,6 +36,7 @@ if __name__ == "__main__":
         print("Template Generation Run")
         time.sleep(1)
         GPT_lat_err.lattice_replacer_template()
+        
     elif len(sys.argv) >= 3:
         print("Error Run")
         time.sleep(1)
