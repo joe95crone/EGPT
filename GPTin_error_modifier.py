@@ -98,9 +98,14 @@ class GPT_error_mod:
         # here is the dipole modification
         # saying that is the element constants
         elif ele_split[0] == 'sectormagnet': 
-        #elif '"bend' in ele_split[2]:
-            ele_split[1] = '"' + ele_split[1].split('"')[1] + '_err' + '"'
-            ele_split[2] = '"' + ele_split[2].split('"')[1] + '_err' + '"'
+            if len(ele_split[1].split('"')[1].split('_')) == 1:
+                ele_split[1] = '"' + ele_split[1].split('"')[1] + '_err' + '"'
+            else:
+                ele_split[1] ='"' + ele_split[1].split('"')[1].split('_')[0] + '_err_' + ele_split[1].split('"')[1].split('_')[1] + '"'
+            if len(ele_split[2].split('"')[1].split('_')) == 1:
+                ele_split[2] = '"' + ele_split[2].split('"')[1] + '_err' + '"'
+            else:
+                ele_split[2] ='"' + ele_split[2].split('"')[1].split('_')[0] + '_err_' + ele_split[2].split('"')[1].split('_')[1] + '"'
             return ele_split 
         else:
             # full ECS with misalignment and ccs label, all other x, y, z offsets and rotations ported
@@ -124,8 +129,7 @@ class GPT_error_mod:
             #! all dipole parameters must be passed as variables
             for params in range(self.ECSargs_dip, len(param_rep)-1):
                 if '"' not in param_rep[params]:
-                    param_rep[params] = "{2}".format(params, ele_num, param_rep[params] + "_err")
-                    #err_param_ident.append("{0}_{1}".format(params, ele_num))
+                    param_rep[params] = "{0}".format(param_rep[params].split('_')[0] + "_err_" + param_rep[params].split('_')[1])
             return [param_rep, err_param_ident]
         else:
             for params in range(self.ECSargs, len(param_rep)-1):

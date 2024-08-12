@@ -88,7 +88,6 @@ class GPT_run_analyse:
         return ["{0}={1}".format(tol_keys_keys_, err_vals_) for tol_keys_keys_, err_vals_ in zip(tol_keys_keys, err_vals)]
     
     # function for running GPT
-    #! careful of the GPT path and GPT license - how to set these properly??
     def GPT_run(self, trial):
         # function to get the error values in the correct pattern
         err_struct = self.error_val_structure()
