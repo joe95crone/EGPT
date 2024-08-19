@@ -49,10 +49,16 @@ if __name__ == "__main__":
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
             # get the analysis    
             run_data = GPT_run.GPT_run_get_analysis()
-            #run_data = GPT_run.get_analysis_only("2CAV_SWISSFEL\\")
+            #run_data = GPT_run.get_analysis_only()
 
             # do plotting/analysis 
-            #GPT_plots = GPTplt.GPT_plotting(run_data)
+            GPT_plots = GPTplt.GPT_plotting(run_data)
+            GPT_plots.beam_size(TP_flag='pos')
+            GPT_plots.beam_size(TP_flag='time')
+            
+            GPT_plots.trajectory(TP_flag='pos')
+            GPT_plots.trajectory(TP_flag='time')
+            
             #GPT_plots.trial_energy_plot()
             #GPT_plots.trial_energy()
             # standard plotting (time-like only currently)

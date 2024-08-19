@@ -39,7 +39,6 @@ class GPT_run_analyse:
         self.ntrial = int(ntrial)
 
         # paths
-        #self.path = 'D:\\GPT_err\\'
         self.path = os.getcwd() + '\\'
 
         # yaml tolerance file
@@ -87,11 +86,19 @@ class GPT_run_analyse:
         # two arrays which I pattern as they'd appear in a GPT command then return 
         return ["{0}={1}".format(tol_keys_keys_, err_vals_) for tol_keys_keys_, err_vals_ in zip(tol_keys_keys, err_vals)]
     
+    # function to remove the data file that stores applied errors from previous run
+    def error_storage_clear(self, trial):
+        if trial == 1:
+            data_file = self.path + 'error_applied.dat'
+            if os.path.exists(data_file):
+                os.remove(data_file)
+
     # function for running GPT
     def GPT_run(self, trial):
         # function to get the error values in the correct pattern
         err_struct = self.error_val_structure()
         # write the error values to file
+        self.error_storage_clear(trial)
         with open("error_applied.dat", "a") as err_file:
             for line in err_struct:
                 if ((line.split('=')[0][0] == 'd' or line.split('=')[0][0] == 't') and line.split('=')[-1] == '0') or (line.split('=')[0][0] == 'f' and line.split('=')[-1] == '1'):

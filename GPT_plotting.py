@@ -26,10 +26,16 @@ class GPT_plotting:
     #        for i in range(1,self.ntrials+1):
     #            mean_analysis_step.append(getattr(getattr(self.run_data, self.run_keys[i-1]).time, analysis_param).value[step])
 
+    # get Lorentz speed Factor - position based only
+    # only required for position analysis
+    def Lorentz_speed_fac_pos(self):
+        return self.run_data.trial_1.pos.avgBz.value
+
     # Sorting function based on position - returns an ordered list of the indexes
-    #! WARNING: this assumes that there is only a single co-ordinate system used
     def position_sort(self):
-        return np.argsort(self.run_data.trial_1.pos.position.value)
+        # sorts using avgt
+        indexes = sorted(range(len(self.run_data.trial_1.pos.avgt.value)), key=lambda k: self.run_data.trial_1.pos.avgt.value[k])
+        return indexes
 
     # calculates the energy and energy spread jitter parameters at the end position of the line
     #! WARNING: this assumes that the furthest position value is the end of the line (can be false for many co-ordinate systems)
@@ -100,26 +106,46 @@ class GPT_plotting:
 
     # PLOTTING FUNCTIONS
     # beam size plot
-    def beam_size(self):    
+    def beam_size(self, TP_flag='time'):    
         plt.figure()
-        for i in range(1,self.ntrials+1):
-            plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdx.value/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
-            plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdy.value/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
-        plt.title("Time-like")
         plt.xlabel("s [m]")
         plt.ylabel("Beam Size [$\mathregular{\mu}$m]")
-        #plt.legend()
-        plt.savefig('FIGS\Beamsize.png')
+        if TP_flag == 'time': 
+            for i in range(1,self.ntrials+1):
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdx.value/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdy.value/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
+            plt.legend()
+            plt.title("Time-like")
+            plt.savefig('FIGS\Beamsize_time.png')
+        elif TP_flag == 'pos':
+            indexes = self.position_sort()
+            beta_fac = self.Lorentz_speed_fac_pos()
+            for i in range(1,self.ntrials+1):
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.stdx.value[indexes]/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.stdy.value[indexes]/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
+            plt.legend()
+            plt.title('Position-like')
+            plt.savefig('FIGS\Beamsize_pos.png')        
         plt.show()
 
-    def trajectory(self):    
+    def trajectory(self, TP_flag='time'):    
         plt.figure()
-        for i in range(1,self.ntrials+1):
-            plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgx.value/constants.micro, label="X " + self.run_keys[i-1])
-            plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgy.value/constants.micro, label="Y " + self.run_keys[i-1])
-        plt.title("Time-like")
         plt.xlabel("s [m]")
         plt.ylabel("Trajectory [$\mathregular{\mu}$m]")
-        #plt.legend()
-        plt.savefig('FIGS\Trajectory.png')
+        if TP_flag == 'time':
+            for i in range(1,self.ntrials+1):
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgx.value/constants.micro, label="X " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgy.value/constants.micro, label="Y " + self.run_keys[i-1])
+            plt.title("Time-like")
+            plt.legend()
+            plt.savefig('FIGS\Trajectory_time.png')
+        elif TP_flag == 'pos':
+            indexes = self.position_sort()
+            beta_fac = self.Lorentz_speed_fac_pos()
+            for i in range(1, self.ntrials+1):
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.avgx.value[indexes]/constants.micro, label="X " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.avgy.value[indexes]/constants.micro, label="Y " + self.run_keys[i-1])
+            plt.title("Position-like")
+            plt.legend()
+            plt.savefig('FIGS\Trajectory_pos.png')
         plt.show()
