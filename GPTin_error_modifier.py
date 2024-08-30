@@ -201,8 +201,8 @@ class GPT_error_mod:
     def add_dipole_err_params(self, new_lattice):
         dipole_dat = [list(map(list, zip(*self.element_types())))[i] for i, x in enumerate(self.element_types()[0]) if x == "sectormagnet"]
         # list of params
-        dip_var_params = {'Ldip': 'Ldip_err', 'bendang': 'bendang_err', 'dl': 'dl_err', 'b1': 'b1_err', 'b2': 'b2_err'}
-        dip_params = dip_var_params | {'phi': 'phi_err', 'Bfield': 'Bfield_err', 'Rbend': 'Rbend_err', 'intersect': 'intersect_err'}
+        dip_var_params = {'Ldip': 'Ldip_err', 'bendang': 'bendang_err', 'phiin': 'phiin_err', 'phiout': 'phiout_err', 'dl': 'dl_err', 'b1': 'b1_err', 'b2': 'b2_err'}
+        dip_params = dip_var_params | {'Bfield': 'Bfield_err', 'Rbend': 'Rbend_err', 'intersect': 'intersect_err'}
         # generate the new dipole parameter definitions and their errorable parameters
         err_params = []
         for dip_no in range(len(dipole_dat)):
@@ -215,7 +215,7 @@ class GPT_error_mod:
                     new_line = self.replace_dipole_params(line, dip_params)
                     # loop to put the f_ and d_ into the dependent parameters 
                     if any(i in new_line.split('=')[0] for i in list(dip_var_params.keys())):
-                        new_lines.append(new_line.split('=')[0] + '=' + 'f_{0}_{1}*'.format(param_no, dipole_dat[dip_no][-1]) + new_line.split('=')[1].split(';')[0] + ' + d_{0}_{1}'.format(param_no, dipole_dat[dip_no][-1]) + ';' + new_line.split('=')[1].split(';')[1])
+                        new_lines.append(new_line.split('=')[0] + '=' + 'f_{0}_{1}*('.format(param_no, dipole_dat[dip_no][-1]) + new_line.split('=')[1].split(';')[0] + ') + d_{0}_{1}'.format(param_no, dipole_dat[dip_no][-1]) + ';' + new_line.split('=')[1].split(';')[1])
                         err_params.append('{0}_{1}'.format(param_no, dipole_dat[dip_no][-1]))
                         param_no += 1 
                     else:
