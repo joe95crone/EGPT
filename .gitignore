@@ -8,7 +8,12 @@ MAPS/
 2CAV_CLARA/
 3CAV_CLARA/
 FIGS/
-TECH_NOTES/
+
+# uploads of the technical notes
+#ignore the word versions
+*.docx
+
+
 
 
 # ignore all GPT input and gdf files (too much data) - the EPAC ones have been included as 
