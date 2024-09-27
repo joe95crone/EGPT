@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "e-gpt"
+version = "0.1.0"
+description = "A python wrapper to simplify error and jitter analysis studies using the General Particle Tracer (GPT) accelerator code."
+license = "MIT"
+authors = ["Joe Crone <joe95crone@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/joe95crone/EGPT"
+keywords = ["accelerator","jitter","error","GPT"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.32.3"
+numpy = "^2.1.1"
+easygdf = "^2.0.10"
+munch = "^4.0.0"
+matplotlib = "^3.9.2"
+scipy = "^1.14.1"
+pyyaml = "^6.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

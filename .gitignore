@@ -1,17 +1,23 @@
 # we need to separate out some of the big files like maps, gdf files from the commit
 # some files, like example lattices (.in files) and tolerance files (.yml files) are kept in as an example, but we don't want all 
 
-# ignore the MAPS directories
-MAPS/
+# no dist - can be re-evaluated before PyPi 
+dist/
 
-# ignore the plots + data directories
-2CAV_CLARA/
-3CAV_CLARA/
-FIGS/
+# select examples only - EPAC PMQ Array + dipole testing
+examples/*
+!examples/EPAC_PMQ/
+!examples/DIPOLE_TESTING/
+
+# no tests
+tests/
+
+# no utilities
+utilities/
 
 # uploads of the technical notes
 #ignore the word versions
-*.docx
+technical_notes/*.docx
 
 
 
