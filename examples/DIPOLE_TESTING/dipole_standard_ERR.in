@@ -1,0 +1,138 @@
+# Test dipole misalignments
+
+# Beam parameters for EPAC 10 PMQ
+N      =  1e4 ;    # Total number of particles
+Qtotal = -100e-12 ;   # Total charge [C]
+
+# mec2 in eV
+meeV = (me*c*c)/(-qe);
+
+meanEnergy  = 1000e6 ; # Average energy [eV]
+
+refEnergy  = 1000e6 ; # Average energy [eV]
+
+stdEnergy   = 10e6 ;  # rms energy spread [eV]
+chirpEnergy = 1 ;    # Linear energy chirp [m^-1]
+
+emitX  = 5.107e-10/sqrt(2) ;     # rms emittance [m-rad] (non-normalised)
+emitY  = 5.107e-10/sqrt(2) ;
+alphaX = 0;
+alphaY = 0;
+betaX = 0.005;
+betaY = 0.005;
+
+sigZ   = 10e-15*c ;    # rms bunch length [m] (usually 3e-6) 9e-4 is 3 ps
+
+
+# Derived parameters
+gamma = 1+|qe|*meanEnergy/(me*c*c) ;
+gammabeta = sqrt(gamma^2 - 1) ;
+beta  = sqrt(1-gamma^-2) ;
+
+sig_x  = sqrt(betaX*emitX) ;
+sig_y  = sqrt(betaY*emitY) ;
+sig_px = sqrt(emitX/betaX) ;
+sig_py = sqrt(emitY/betaY) ;
+
+# Position particles
+setparticles("beam", N, me, qe, Qtotal) ;
+setxdist("beam","g",0, sig_x, 3,3) ;
+setydist("beam","g",0, sig_y, 3,3) ; 
+setGBxdist("beam","g",0, sig_px, 3,3) ;
+setGBydist("beam","g",0, sig_py, 3,3) ;
+
+setzdist("beam","g",0, sigZ, 3,3) ;
+setGdist("beam","g",gamma, |qe|*stdEnergy/(me*c*c), 3,3) ;
+
+#addxdiv("beam",0,-gammabeta*alphaX/betaX) ;
+#addydiv("beam",0,-gammabeta*alphaY/betaY) ;
+addxdiv("beam",0,-gammabeta/betaX) ;
+addydiv("beam",0,-gammabeta/betaY) ;
+addzdiv("beam",0,-(me*c*c/|qe|)*(gamma-1)*chirpEnergy) ;
+
+# Notes:
+# Start using time distribution : Use 'settdist' instead of 'setzdist'
+# Start at some other fixed time: Use 'setextrapolate'
+# Twiss parameters will be off in case of excessive (correlated) energy spread
+
+#-----------------------------------------------
+# SETTINGS
+#-----------------------------------------------
+accuracy(6); # accuracy(7);
+dtmax = 10e-12;
+#writesteps();
+#writeelegant();
+
+#spacecharge3Dmesh();
+
+#----------
+# BEAMLINE
+#----------
+# 0.5 m drift, 0.5 m dipole, 0.5 m drift
+
+quadrupole("wcs",0 + dx1,0 + dy1,0.3 + dz1,cos(th1),-sin(th1),0,sin(th1),cos(th1),0,f_11_1*0.2 + d_11_1,f_12_1*50 + d_12_1);
+
+#------------------------------------------
+# SPECTROMETER
+#------------------------------------------
+# modelled as a sector bend with edge angles & fringe fields
+
+Ldip_1 = 0.5; # arc length of dipole [m]
+Ldip_err_1 =f_1_2*( 0.5) + d_1_2; # arc length of dipole [m]
+bendang_1 = 20;# bend angle of dipole [deg]
+bendang_err_1 =f_2_2*( 20) + d_2_2;# bend angle of dipole [deg]
+phiin_1 = bendang_1/(2*deg);
+phiin_err_1 =f_3_2*( bendang_err_1/(2*deg)) + d_3_2;
+phiout_1 = bendang_1/(2*deg);
+phiout_err_1 =f_4_2*( bendang_err_1/(2*deg)) + d_4_2;
+dl_1 = 0;
+dl_err_1 =f_5_2*( 0) + d_5_2;
+# half gap is pi/b1, need to set this so the beam can pass through
+# works like a collimator for TDC measurements unless aperture set correctly
+# set hgap to a 38 mm pipe diameter - can be made up to 60 mm according to A. Bainbridge
+#b1 = 165.35;
+b1_1 = 0;
+b1_err_1 =f_6_2*( 0) + d_6_2;
+b2_1 = 0;
+b2_err_1 =f_7_2*( 0) + d_7_2;
+
+# Calculated parameters below have been checked against James's values
+
+Bfield_1 = (sqrt(refEnergy*(refEnergy+2*meeV))*(bendang_1/deg))/(Ldip_1*c); # magnetic field strength [T] (James method)
+Bfield_err_1 = (sqrt(refEnergy*(refEnergy+2*meeV))*(bendang_err_1/deg))/(Ldip_err_1*c); # magnetic field strength [T] (James method)
+
+Rbend_1 = -me*c*gamma*beta/(qe*Bfield_1); # Mind the SIGN! Bas's equation
+Rbend_err_1 = -me*c*gamma*beta/(qe*Bfield_err_1); # Mind the SIGN! Bas's equation
+
+intersect_1 = Rbend_1*tan(bendang_1/(2*deg)); # intersection in the dipole
+intersect_err_1 = Rbend_err_1*tan(bendang_err_1/(2*deg)); # intersect_errion in the dipole
+
+# Co-ordinate System
+# from the start of the element plus the intersect
+ccs("wcs", 0, 0, 0.5 + intersect_1, cos(bendang_1/deg), 0, -sin(bendang_1/deg), 0, 1 ,0, "bend_1");
+
+# Spectrometer Magnet
+ccs("wcs",0 + dx2,0 + dy2,0.5  + dz2,1, 0, 0, 0, 1, 0,"wcs_err");
+ccsflip("wcs","z",0.5  + dz2,"wcs_err");
+ccs("wcs",0 + dx2,0 + dy2,0.5 + intersect_1 + dz2,cos(bendang_1/deg) + cos(th2),0 -sin(th2),-sin(bendang_1/deg) + 0,0 + sin(th2),1  + cos(th2),0 + 0,"bend_err_1");
+sectormagnet("wcs_err","bend_err_1",Rbend_err_1,Bfield_err_1,phiin_err_1,phiout_err_1,dl_err_1,b1_err_1,b2_err_1);
+ccsflip("bend_err_1","z",Ldip_err_1 - intersect_err_1,"bend_1");
+
+#quadrupole("wcs","z",0.8,0.2,50); # test!
+
+#-----------------
+# POSITION OUTPUT
+#-----------------
+# setting up data in reverse order i.e. screen commands from the end backwards means data is produced in s = 0 -> s = end format
+
+# w.r.t. local co-ords (post-intersect) only works when the time output is on too? bug?
+screen("bend_1", "I", 0, (0.5+intersect_1), 0.01, "bend_1");
+
+# w.r.t. world co-ords (up to intersect)
+screen("wcs", "I", 0, 0.5 + intersect_1, 0.01, "wcs");
+
+#-------------
+# TIME OUTPUT
+#-------------
+
+tout(0,(1.5/(beta*c)),0.01/(beta*c));

@@ -4,12 +4,10 @@
 # no dist - can be re-evaluated before PyPi 
 dist/
 
-# select examples only - EPAC PMQ Array + dipole testing
-
+# select examples only - dipole testing
 examples/** 
 !examples/DIPOLE_TESTING/
 !examples/DIPOLE_TESTING/**
-
 
 # no tests
 tests/
@@ -20,17 +18,3 @@ utilities/
 # uploads of the technical notes
 #ignore the word versions
 technical_notes/*.docx
-
-
-
-
-# ignore all GPT input and gdf files (too much data) - the EPAC ones have been included as 
-*.gdf
-*.in
-
-# ignore the yaml template files generated
-*.yml
-!GPT_congif.yml
-
-# ignore the dat files that are generate
-*.dat
