@@ -5,9 +5,11 @@
 dist/
 
 # select examples only - EPAC PMQ Array + dipole testing
-examples/*
-!/examples/EPAC_PMQ/
-!/examples/DIPOLE_TESTING/
+
+examples/** 
+!examples/DIPOLE_TESTING/
+!examples/DIPOLE_TESTING/**
+
 
 # no tests
 tests/
