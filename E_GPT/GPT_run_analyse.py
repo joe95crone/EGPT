@@ -39,23 +39,39 @@ class GPT_run_analyse:
         self.ntrial = int(ntrial)
 
         # paths
-        self.path = os.getcwd() + '\\'
+        self.EGPTpath = os.path.dirname(os.path.realpath(__file__)) + '\\'
 
-        # yaml tolerance file
-        self.inyaml = self.path + str(inyaml)
-        
+        if '\\' in r'%r' % GPTin:
+            self.GPTinfile = GPTin.split('\\')[-1]
+            self.wdEGPTpath = '\\'.join(GPTin.split('\\')[:-1]) + '\\'
+        elif '/' in GPTin:
+            self.GPTinfile = GPTin.split('/')[-1]
+            self.wdEGPTpath = '/'.join(GPTin.split('/')[:-1]) + '/'
+        else:
+            self.GPTinfile = str(GPTin)
+            self.wdEGPTpath = ''
+
         # initial GPT in file
-        self.GPTin = str(GPTin)
-        self.GPTinfile = self.path + self.GPTin.split('.')[0] + '_ERR' + '.' + self.GPTin.split('.')[-1]
+        self.GPTinfile = self.EGPTpath + self.wdEGPTpath + self.GPTinfile.split('.')[0] + '_ERR' + '.' + self.GPTinfile.split('.')[-1]
 
+        # yaml tolerance file - assumes it is in working directory
+        if '\\' in r'%r' % inyaml:
+            self.inyaml = inyaml.split('\\')[-1]
+        elif '/' in inyaml:
+            self.inyaml = inyaml.split('/')[-1]
+        else:
+            self.inyaml = inyaml
+        
+        self.inyaml = self.EGPTpath + self.wdEGPTpath + self.inyaml
+        
         # output GPT files
         self.GDFfile = 'temp.gdf'
-        self.GPToutfile = self.path + self.GDFfile
-        self.GPT_time_file = self.GPToutfile.split('.')[0] + "_time." + self.GPToutfile.split('.')[1]
-        self.GPT_pos_file = self.GPToutfile.split('.')[0] + '_pos.' + self.GPToutfile.split('.')[1]
+
+        # data file to store applied errors
+        self.data_file = self.EGPTpath + self.wdEGPTpath + 'error_applied.dat'
 
         # gpt details
-        with open('GPT_config.yml', 'r') as GPTconfigfile:
+        with open(self.EGPTpath + 'GPT_config.yml', 'r') as GPTconfigfile:
             GPTconfig = munch.munchify(yaml.safe_load(GPTconfigfile))
         self.GPTpath = GPTconfig.location[0]
         self.GPTlicense = GPTconfig.license_num[0]
@@ -89,9 +105,8 @@ class GPT_run_analyse:
     # function to remove the data file that stores applied errors from previous run
     def error_storage_clear(self, trial):
         if trial == 1:
-            data_file = self.path + 'error_applied.dat'
-            if os.path.exists(data_file):
-                os.remove(data_file)
+            if os.path.exists(self.data_file):
+                os.remove(self.data_file)
 
     # function for running GPT
     def GPT_run(self, trial):
@@ -99,7 +114,7 @@ class GPT_run_analyse:
         err_struct = self.error_val_structure()
         # write the error values to file
         self.error_storage_clear(trial)
-        with open("error_applied.dat", "a") as err_file:
+        with open(self.data_file, "a") as err_file:
             for line in err_struct:
                 if ((line.split('=')[0][0] == 'd' or line.split('=')[0][0] == 't') and line.split('=')[-1] == '0') or (line.split('=')[0][0] == 'f' and line.split('=')[-1] == '1'):
                     pass
@@ -108,7 +123,7 @@ class GPT_run_analyse:
             err_file.write("\n")
         err_file.close()
         # get the output file name
-        trial_outfile = self.GPToutfile.split('.')[0] + "_" +  str(trial) + "." + self.GPToutfile.split('.')[1]
+        trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_" +  str(trial) + "." + self.GDFfile.split('.')[1]
         # run GPT command
         GPT_cmd = [self.GPTpath + 'gpt.exe'] + ['-o', trial_outfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=' + str(self.GPTlicense)]
         subprocess.call(GPT_cmd)
@@ -116,9 +131,9 @@ class GPT_run_analyse:
         # run the analysis of the GDF output file (time & position)
     def run_GDF_analysis(self, trial):
         # paths
-        time_trial_outfile = self.GPT_time_file.split('.')[0] + "_" + str(trial) + "." + self.GPT_time_file.split('.')[1]
-        pos_trial_outfile = self.GPT_pos_file.split('.')[0] + "_" + str(trial) + "."  + self.GPT_pos_file.split('.')[1]
-        trial_outfile = self.GPToutfile.split('.')[0] + "_" + str(trial) + "."  + self.GPToutfile.split('.')[1]
+        time_trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_time_" + str(trial) + "." + self.GDFfile.split('.')[1]
+        pos_trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_pos_" + str(trial) + "."  + self.GDFfile.split('.')[1]
+        trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_" +  str(trial) + "." + self.GDFfile.split('.')[1]
 
         # time-like analysis
         time_output = ['time', 'avgx', 'avgy', 'avgz', 'stdx', 'stdBx', 'stdy', 'stdBy', 'stdz', 'nemixrms', 'nemiyrms', 'nemizrms', 'numpar', 'nemirrms', 'avgG', 'avgp', 'stdG', 'avgBx', 'avgBy', 'avgBz', 'CSalphax', 'CSalphay', 'CSbetax', 'CSbetay', 'avgfBx', 'avgfEx', 'avgfBy', 'avgfEy', 'avgfBz', 'avgfEz']
@@ -132,11 +147,13 @@ class GPT_run_analyse:
 
     # gets the time analysis file and returns as a series of munch dictionaries
     # use as time, pos, tout, screens = GPT_analyse.get_GDF_anaysis()
-    def get_GDF_analysis(self, trial, datapath=''):
+    def get_GDF_analysis(self, trial, datapath=None):
         #paths
-        time_trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_time" + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
-        pos_trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_pos" + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
-        trial_outfile = (self.path + datapath + self.GDFfile).split('.')[0] + "_" + str(trial) + "."  + (self.path + datapath + self.GDFfile).split('.')[1]
+        if datapath == None:
+            datapath = self.wdEGPTpath
+        time_trial_outfile = self.EGPTpath + datapath + self.GDFfile.split('.')[0] + "_time_" + str(trial) + "."  + self.GDFfile.split('.')[1]
+        pos_trial_outfile = self.EGPTpath + datapath + self.GDFfile.split('.')[0] + "_pos_" + str(trial) + "."  + self.GDFfile.split('.')[1]
+        trial_outfile = self.EGPTpath + datapath + self.GDFfile.split('.')[0] + "_" + str(trial) + "."  + self.GDFfile.split('.')[1]
 
         # data given using <dict>.<param>.value
         GDFtime = easygdf.load(time_trial_outfile)
@@ -158,34 +175,33 @@ class GPT_run_analyse:
 
     # multiprocessing function call (run GPT, run GDFA, delete GDF - memory limits)
     def GPT_run_multi(self, trial):
-        self.GPT_run(trial)
-        self.run_GDF_analysis(trial)
-        trial_outfile = self.GPToutfile.split('.')[0] + "_" +  str(trial) + "." + self.GPToutfile.split('.')[1]
-        os.remove(trial_outfile)
+       self.GPT_run(trial)
+       self.run_GDF_analysis(trial)
+       if self.keep_beam == False:
+            trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_" + str(trial) + "."  + self.GDFfile.split('.')[1]
+            os.remove(trial_outfile)
     
+    # function for getting the data if the run has already been done (accessing only analysis functions) 
+    # specifying a data path allows plotting data from files (give path from cwd)
+    def get_analysis_dict(self, datapath=None):
+        multi_analysis = {}
+        for trial in range(1, self.ntrial + 1):
+            multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial, datapath)          
+        return munch.munchify(multi_analysis)
+
     # run multiple or single error runs
     # returns data in an array the length of the no. trials
-    def GPT_run_get_analysis(self):
-        # run the GPT function call
+    def GPT_run_get_analysis_dict(self):
+        # run the GPT function call for multiple trials
         pool = mp.Pool(mp.cpu_count())
         for trial in range(1, self.ntrial + 1):
             pool.apply_async(self.GPT_run_multi, args = (trial, ))
         pool.close()
         pool.join()
-
-        # get analysis
-        multi_analysis = {}
-        for trial in range(1, self.ntrial + 1):
-            multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial)          
-        return munch.munchify(multi_analysis)
+          
+        return self.get_analysis_dict()
     
-    # function for getting the data if the run has already been done (accessing only analysis functions) 
-    # specifying a data path allows plotting data from files (give path from cwd)
-    def get_analysis_only(self, datapath=''):
-        multi_analysis = {}
-        for trial in range(1, self.ntrial + 1):
-            multi_analysis['trial_{0}'.format(trial)] = self.get_GDF_analysis(trial, datapath)          
-        return munch.munchify(multi_analysis)
+
 
     
 

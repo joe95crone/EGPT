@@ -7,15 +7,32 @@ import munch
 from matplotlib import pyplot as plt
 from scipy import constants
 import numpy as np
+import os
+
  
 # plotting & analysis functions
 class GPT_plotting:
-    def __init__(self, run_data):
+    def __init__(self, run_data, infile):
         self.run_data = run_data
         
         self.ntrials = len(run_data.keys())
         self.run_keys = list(run_data.keys())
 
+        self.EGPTpath = os.path.dirname(os.path.realpath(__file__)) + '\\'
+
+        if '\\' in r'%r' % infile:
+            self.GPTinfile = infile.split('\\')[-1]
+            self.wdEGPTpath = '\\'.join(infile.split('\\')[:-1]) + '\\'
+        elif '/' in infile:
+            self.GPTinfile = infile.split('/')[-1]
+            self.wdEGPTpath = '/'.join(infile.split('/')[:-1]) + '/'
+        else:
+            self.GPTinfile = str(infile)
+            self.wdEGPTpath = ''
+
+        # create a directory for plots
+        if os.path.exists(self.EGPTpath + self.wdEGPTpath + "FIGS") == False:
+            os.mkdir(self.EGPTpath + self.wdEGPTpath + "FIGS")
     # ANALYSIS FUNCTIONS
     #def mean_analysis_value(self, analysis_param):
     #    # step over each timestep
@@ -80,28 +97,28 @@ class GPT_plotting:
         plt.title('Mean Energy (Position-like)')
         plt.xlabel('s [m]')
         plt.ylabel('Mean Energy [MeV]')
-        plt.savefig('FIGS/RUEDI_Imaging_Mean_Energy.png')
+        plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS/RUEDI_Imaging_Mean_Energy.png')
         
         plt.figure(2)
         plt.plot(position, rel_energy_deviation, c='blue')
         plt.title('Rel. Energy Deviation  (Position-like)')
         plt.xlabel('s [m]')
         plt.ylabel('Rel. Rms (1$\mathregular{\sigma}$) Energy Deviation [%]')
-        plt.savefig('FIGS/RUEDI_Imaging_Rel_Energy_Deviation.png')
+        plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS/RUEDI_Imaging_Rel_Energy_Deviation.png')
 
         plt.figure(3)
         plt.plot(position, mean_rel_energy_spread_vals, c='red')
         plt.title('Mean Rel. Energy Spread (Position-like)')
         plt.xlabel('s [m]')
         plt.ylabel('Mean Rms Rel. Energy Spread [%]')
-        plt.savefig('FIGS/RUEDI_Imaging_Mean_Energy_Spread.png')
+        plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS/RUEDI_Imaging_Mean_Energy_Spread.png')
 
         plt.figure(4)
         plt.plot(position, rms_rel_energy_spread_variation, c='blue')
         plt.title('Rms Rel. Energy Spread Deviation (Position-like)')
         plt.xlabel('s [m]')
         plt.ylabel('Rms (1$\mathregular{\sigma}$) Rel. Energy Spread Deviation [%]')
-        plt.savefig('FIGS/RUEDI_Imaging_Rel_Energy_Spread_Deviation.png')
+        plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS/RUEDI_Imaging_Rel_Energy_Spread_Deviation.png')
         plt.show()
 
     # PLOTTING FUNCTIONS
@@ -116,7 +133,7 @@ class GPT_plotting:
                 plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdy.value/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
             plt.legend()
             plt.title("Time-like")
-            plt.savefig('FIGS\Beamsize_time.png')
+            plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Beamsize_time.png')
         elif TP_flag == 'pos':
             indexes = self.position_sort()
             beta_fac = self.Lorentz_speed_fac_pos()
@@ -125,7 +142,7 @@ class GPT_plotting:
                 plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.stdy.value[indexes]/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
             plt.legend()
             plt.title('Position-like')
-            plt.savefig('FIGS\Beamsize_pos.png')        
+            plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Beamsize_pos.png')        
         plt.show()
 
     def trajectory(self, TP_flag='time'):    
@@ -138,7 +155,7 @@ class GPT_plotting:
                 plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgy.value/constants.micro, label="Y " + self.run_keys[i-1])
             plt.title("Time-like")
             plt.legend()
-            plt.savefig('FIGS\Trajectory_time.png')
+            plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Trajectory_time.png')
         elif TP_flag == 'pos':
             indexes = self.position_sort()
             beta_fac = self.Lorentz_speed_fac_pos()
@@ -147,5 +164,5 @@ class GPT_plotting:
                 plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.avgy.value[indexes]/constants.micro, label="Y " + self.run_keys[i-1])
             plt.title("Position-like")
             plt.legend()
-            plt.savefig('FIGS\Trajectory_pos.png')
+            plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Trajectory_pos.png')
         plt.show()

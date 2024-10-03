@@ -4,6 +4,9 @@
 # no dist - can be re-evaluated before PyPi 
 dist/
 
+# no GPT configuration file
+GPT_config.yml
+
 # select examples only - dipole testing
 examples/** 
 !examples/DIPOLE_TESTING/

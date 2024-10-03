@@ -10,10 +10,21 @@ import os
 class GPT_error_mod:
     def __init__(self, filename):
         # read file
-        self.infile = str(filename)
-        self.path = os.getcwd() + '\\'
-        self.file = open(self.path + self.infile, 'r')
+        self.EGPTpath = os.path.dirname(os.path.realpath(__file__)) + '\\'
+
+        if '\\' in r'%r' % filename:
+            self.infile = filename.split('\\')[-1]
+            self.wdEGPTpath = '\\'.join(filename.split('\\')[:-1]) + '\\'
+        elif '/' in filename:
+            self.infile = filename.split('/')[-1]
+            self.wdEGPTpath = '/'.join(filename.split('/')[:-1]) + '/'
+        else:
+            self.infile = str(filename)
+            self.wdEGPTpath = ''
+
+        self.file = open(self.EGPTpath + self.wdEGPTpath + self.infile, 'r')
         self.file_lines = self.file.readlines()
+
         # possible GPT element types, with no. maximum expected arguments
         self.ECSargs = 11
         # sectormagnets use other coord system, not in-element explicitly stated ones
@@ -73,7 +84,6 @@ class GPT_error_mod:
         else:
             ele_split = [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[0]] + re.split(r"[,]\s*", self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[0]) + [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[1]]
         # remove any comments past ; - this may need some work to be more robust
-        #print(self.file_lines[self.element_index(ele_name)[instance-1]])
         try:
             ele_split = ele_split[:ele_split.index(";\n")]
         except ValueError:
@@ -186,7 +196,6 @@ class GPT_error_mod:
                     misaligned_dipole_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[11].split('_')[0] + '_err_' + orig_ccs[11].split('_')[1] + ',' + '"z"' + ',' + 'Ldip_err_{0} - intersect_err_{0}'.format(dipole_dat[dip_no][1]) + ',' + orig_ccs[11] + ")" + orig_ccs[-1]
                     break
                     # adding the new ccs & ccsflip elements to the lattice
-            #print(misaligned_start_ccs)
             new_lattice.insert(dipole_dat[dip_no][2] + dip_no*self.dipole_ccs_add, misaligned_dipole_ccs)
             new_lattice.insert(dipole_dat[dip_no][2] + dip_no*self.dipole_ccs_add, misaligned_start_ccsflip)
             new_lattice.insert(dipole_dat[dip_no][2] + dip_no*self.dipole_ccs_add, misaligned_start_ccs)
@@ -251,7 +260,7 @@ class GPT_error_mod:
                 if ident_eles[0][ele] == 'sectormagnet':
                     err_param_ident[ele] = dip_err_params[ident_eles[1][ele]-1]
         # write out the lattice file
-        filename = self.infile.split('.')[0] + '_ERR' + '.' + self.infile.split('.')[-1]
+        filename = self.EGPTpath + self.wdEGPTpath + self.infile.split('.')[0] + '_ERR' + '.' + self.infile.split('.')[-1]
         GPTwrite = open(filename, "w") # overwrites if previously generated!
         GPTwrite.writelines(new_lattice)
         GPTwrite.close()
@@ -290,5 +299,6 @@ class GPT_error_mod:
                     ele_param_dict[error_param_names[ele][param]] = [1, 0, 'gaussian', 3]
             setattr(ele_err_dict, element_names_yaml[ele], ele_param_dict)
         # create YAML tolerance template
-        with open('GPTin_tolerance_temp.yml', 'w') as tempfile:
+        filename = self.EGPTpath + self.wdEGPTpath + 'GPTin_tolerance_temp.yml'
+        with open(filename, 'w') as tempfile:
             yaml.dump(munch.unmunchify(ele_err_dict), tempfile, sort_keys=False)
