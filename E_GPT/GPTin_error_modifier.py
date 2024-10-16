@@ -36,7 +36,7 @@ class GPT_error_mod:
         # Contains all elements in the GPT User Manual V3.43. Only elements with ECS are included. The custom coordinate system (CCS) and associated elements (CCSflip) are also excluded.
         # excluding the limitation elements which set the maximum and minimum limits of Lorentz factor and spatial values ('Gminmax','rmax','xymax','zminmax') because these shouldn't be errored upon (doesn't make physical sense)
         # isectormagnet, sectormagnet have fromCCS toCCS format - requires special handling
-        self.GPT_command = ['TE011cylcavity','TE011gauss','TE110gauss','TErectcavity','TM010cylcavity','TM110gauss','TM110cylcavity','TM010gauss','TMrectcavity','trwcell','trwlinac','trwlinbm','circlecharge','ecyl','ehole','erect','linecharge','platecharge','pointcharge','barmagnet','Bmultipole','bzsolenoid','isectormagnet','linecurrent','magline','magplane','magdipole','magpoint','quadrupole','rectcoil','rectmagnet','sectormagnet','sextupole','solenoid','map1D_B','map1D_E','map1D_TM','map2D_B','map2D_E','map2D_Et','map2Dr_E','map2D_V','map25D_E','map25D_B','map25D_TM','map3D_E','map3D_TM','map3D_Ecomplex','map3D_Hcomplex','map3D_V','map3D_B','map3D_remove','forwardscatter','copperscatter','scatterbitmap','scattercone','scatteriris','scatterpipe','scatterplate','scattersphere','scattertorus','multislit','drift','gauss00mf','undueqfo','unduplan','wakefield']
+        self.GPT_command = ['TE011cylcavity','TE011gauss','TE110gauss','TErectcavity','TM010cylcavity','TM110gauss','TM110cylcavity','TM010gauss','TMrectcavity','trwcell','trwlinac','trwlinbm','circlecharge','ecyl','ehole','erect','linecharge','platecharge','pointcharge','barmagnet','Bmultipole','bzsolenoid','isectormagnet','linecurrent','magline','magplane','magdipole','magpoint','quadrupole','rectcoil','rectmagnet','sectormagnet','sextupole','solenoid','map1D_B','map1D_E','map1D_TM','map2D_B','map2D_E','map2D_Et','map2Dr_E','map2D_V','map25D_E','map25D_B','map25D_TM','map3D_E','map3D_TM','map3D_Ecomplex','map3D_Hcomplex','map3D_V','map3D_B','map3D_remove','scatterbitmap','scattercone','scatteriris','scatterpipe','scatterplate','scattersphere','scattertorus','multislit','drift','gauss00mf','undueqfo','unduplan','wakefield']
     
     # helper function
     # returns lattice file
@@ -69,9 +69,23 @@ class GPT_error_mod:
     def element_tabulate(self):
         return self.element_types()[-1][-1]
 
+    # for definiing if the passed line is an element
+    def iselement(self, line, ele_name):
+        if line.startswith(ele_name):
+            if "scatter=" in line or "scatter =" in line:
+                return True
+            elif "=" not in line:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
     # takes in the lines of the .in file and GPT name of the element e.g. map1D_B, quadrupole, sectorbend etc.
     def element_index(self, ele_name):
-        ele_indexes = [self.file_lines.index(line) for line in self.file_lines if line.startswith(ele_name)]
+        #ele_indexes = [self.file_lines.index(line) for line in self.file_lines if line.startswith(ele_name) and "=" not in line]
+        ele_indexes = [self.file_lines.index(line) for line in self.file_lines if self.iselement(line, ele_name)]
         return ele_indexes
 
     # takes in a line of the .in file and splits this into parts to access GPT element arguments
@@ -81,11 +95,16 @@ class GPT_error_mod:
         #ele_split = re.split(r"[(),#]\s*", self.file_lines[self.element_index(ele_name)[instance-1]])
         if '#' in self.file_lines[self.element_index(ele_name)[instance-1]]:
             ele_split = [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[0]] + re.split(r"[,]\s*", self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[0]) + [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[1].split('#', 1)[0]] 
+        elif 'scatter=' in self.file_lines[self.element_index(ele_name)[instance-1]] or 'scatter =' in self.file_lines[self.element_index(ele_name)[instance-1]]:
+            ele_split = [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[0]] + re.split(r"[,]\s*", self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[0]) + [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[1]]
+            ele_split = ele_split[:-1] + [ele_split[-1].split(';')[0], ';' + ele_split[-1].split(';')[-1]]
         else:
             ele_split = [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[0]] + re.split(r"[,]\s*", self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[0]) + [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[1]]
         # remove any comments past ; - this may need some work to be more robust
         try:
             ele_split = ele_split[:ele_split.index(";\n")]
+        except ValueError:
+            ele_split = ele_split[:ele_split.index(" ;\n")]
         except ValueError:
             ele_split = ele_split[:ele_split.index("; ")]
         ele_split.append(";\n")
@@ -100,6 +119,15 @@ class GPT_error_mod:
         if ele_split[2] == '"z"':
             # full ECS with misalignment and ccs label, z position ported over
             full_ECS = [ele_split[1], "0 + dx{0}".format(ele_num), "0 + dy{0}".format(ele_num), ele_split[3] + " + dz{0}".format(ele_num), "cos(th{0})".format(ele_num), "-sin(th{0})".format(ele_num), "0", "sin(th{0})".format(ele_num), "cos(th{0})".format(ele_num), "0"]
+            # # remove old ECS
+            del ele_split[1:4]
+            # add new ECS
+            ele_split[1:1] = full_ECS
+            return ele_split
+        # identity matrix placement ECS replacement (not actually sure if this is needed...)
+        elif ele_split[2] == "I":
+            # full ECS with misalignment and ccs label
+            full_ECS = [ele_split[1], "0 + dx{0}".format(ele_num), "0 + dy{0}".format(ele_num),  "0 + dz{0}".format(ele_num), "cos(th{0})".format(ele_num), "-sin(th{0})".format(ele_num), "0", "sin(th{0})".format(ele_num), "cos(th{0})".format(ele_num), "0"]
             # # remove old ECS
             del ele_split[1:4]
             # add new ECS
@@ -153,7 +181,11 @@ class GPT_error_mod:
         #ele_replace = self.ECS_replacer(ele_name, instance, ele_num) # for ECS only
         ele_dat = self.param_replacer(ele_name, instance, ele_num)
         ele_replace = ele_dat[0]
-        ele_recomb = ele_replace[0] + "(" + ','.join(ele_replace[1:-1]) + ")" + ele_replace[-1]
+        # handling if there is a scatter="sm" outside of the parenthesis
+        if any("scatter=" in rec_param for rec_param in ele_replace) or any("scatter =" in rec_param for rec_param in ele_replace):
+            ele_recomb = ele_replace[0] + "(" + ','.join(ele_replace[1:-2]) + ")" + ele_replace[-2] + ele_replace[-1]
+        else:
+            ele_recomb = ele_replace[0] + "(" + ','.join(ele_replace[1:-1]) + ")" + ele_replace[-1]
         return [ele_recomb, ele_dat[1]]
     
     # formatting of the error parameters required
