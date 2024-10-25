@@ -24,3 +24,7 @@ technical_notes/*.docx
 
 # avoid any data being saved to repository
 *.gdf
+
+
+# don't save any figures 
+*.png
