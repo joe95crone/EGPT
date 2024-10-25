@@ -70,11 +70,10 @@ class GPT_run_analyse:
         # data file to store applied errors
         self.data_file = self.EGPTpath + self.wdEGPTpath + 'error_applied.dat'
 
-        # gpt details
-        with open(self.EGPTpath + 'GPT_config.yml', 'r') as GPTconfigfile:
-            GPTconfig = munch.munchify(yaml.safe_load(GPTconfigfile))
-        self.GPTpath = GPTconfig.location[0]
-        self.GPTlicense = GPTconfig.license_num[0]
+        self.GPTlicense = os.environ['GPTLICENSE']
+        for path in os.environ['PATH'].split(';'):
+            if 'General Particle Tracer' in path:
+                self.GPTpath = path
 
     # read in the yaml file
     def input_reader(self):
@@ -125,7 +124,7 @@ class GPT_run_analyse:
         # get the output file name
         trial_outfile = self.EGPTpath + self.wdEGPTpath + self.GDFfile.split('.')[0] + "_" +  str(trial) + "." + self.GDFfile.split('.')[1]
         # run GPT command
-        GPT_cmd = [self.GPTpath + 'gpt.exe'] + ['-o', trial_outfile] + [self.GPTinfile] + err_struct + ['GPTLICENSE=' + str(self.GPTlicense)]
+        GPT_cmd = [self.GPTpath + 'gpt.exe'] + ['-o', trial_outfile] + ['-v'] + [self.GPTinfile] + err_struct + ['GPTLICENSE=' + str(self.GPTlicense)]
         subprocess.call(GPT_cmd)
 
         # run the analysis of the GDF output file (time & position)

@@ -5,12 +5,12 @@
 dist/
 
 # no GPT configuration file
-GPT_config.yml
+E_GPT/GPT_config.yml
 
 # select examples only - dipole testing
-examples/** 
+examples/**
+examples/DIPOLE_TESTING/FIGS
 !examples/DIPOLE_TESTING/
-!examples/DIPOLE_TESTING/**
 
 # no tests
 tests/
@@ -21,3 +21,6 @@ utilities/
 # uploads of the technical notes
 #ignore the word versions
 technical_notes/*.docx
+
+# avoid any data being saved to repository
+*.gdf

@@ -93,6 +93,7 @@ class GPT_error_mod:
     def element_splitter(self, ele_name, instance):
         # splits string based on delimiters ( , ) plus any additional white space
         #ele_split = re.split(r"[(),#]\s*", self.file_lines[self.element_index(ele_name)[instance-1]])
+
         if '#' in self.file_lines[self.element_index(ele_name)[instance-1]]:
             ele_split = [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[0]] + re.split(r"[,]\s*", self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[0]) + [self.file_lines[self.element_index(ele_name)[instance-1]].split('(', 1)[1].rsplit(')', 1)[1].split('#', 1)[0]] 
         elif 'scatter=' in self.file_lines[self.element_index(ele_name)[instance-1]] or 'scatter =' in self.file_lines[self.element_index(ele_name)[instance-1]]:
@@ -104,9 +105,10 @@ class GPT_error_mod:
         try:
             ele_split = ele_split[:ele_split.index(";\n")]
         except ValueError:
-            ele_split = ele_split[:ele_split.index(" ;\n")]
-        except ValueError:
-            ele_split = ele_split[:ele_split.index("; ")]
+            try: 
+                ele_split = ele_split[:ele_split.index(" ;\n")]
+            except ValueError:
+                ele_split = ele_split[:ele_split.index("; ")]
         ele_split.append(";\n")
         return ele_split
 
@@ -139,11 +141,11 @@ class GPT_error_mod:
             if len(ele_split[1].split('"')[1].split('_')) == 1:
                 ele_split[1] = '"' + ele_split[1].split('"')[1] + '_err' + '"'
             else:
-                ele_split[1] ='"' + ele_split[1].split('"')[1].split('_')[0] + '_err_' + ele_split[1].split('"')[1].split('_')[1] + '"'
+                ele_split[1] ='"' + ele_split[1].split('"')[1].split('_')[0] + '_err_ent_' + ele_split[1].split('"')[1].split('_')[1] + '"'
             if len(ele_split[2].split('"')[1].split('_')) == 1:
                 ele_split[2] = '"' + ele_split[2].split('"')[1] + '_err' + '"'
             else:
-                ele_split[2] ='"' + ele_split[2].split('"')[1].split('_')[0] + '_err_' + ele_split[2].split('"')[1].split('_')[1] + '"'
+                ele_split[2] ='"' + ele_split[2].split('"')[1].split('_')[0] + '_err_ext_' + ele_split[2].split('"')[1].split('_')[1] + '"'
             return ele_split 
         else:
             # full ECS with misalignment and ccs label, all other x, y, z offsets and rotations ported
@@ -222,10 +224,10 @@ class GPT_error_mod:
                         misaligned_start_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + '1, 0, 0, 0, 1, 0,' + '"' + orig_ccs[1].split('"')[1] + '_err"' + ')' + orig_ccs[-1]
                         misaligned_start_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[1] + ',' + '"z"' + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + '"' + orig_ccs[1].split('"')[1] + '_err"' + ')' + orig_ccs[-1]
                     else:
-                        misaligned_start_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + '1, 0, 0, 0, 1, 0,' + orig_ccs[1].split('_', 1)[0] + '_err_' + orig_ccs[1].split('_', 1)[1] + ')' + orig_ccs[-1]
-                        misaligned_start_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[1] + ',' + '"z"' + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[1].split('_', 1)[0] + '_err_' + orig_ccs[1].split('_', 1)[1] + ')' + orig_ccs[-1]
-                    misaligned_dipole_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[5] +  " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[6] + " -sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[7] + " + 0" + ',' + orig_ccs[8] + " + sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[9] + " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[10] + " + 0" + ',' + orig_ccs[11].split('_')[0] + '_err_' + orig_ccs[11].split('_')[1] + ")" + orig_ccs[-1]
-                    misaligned_dipole_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[11].split('_')[0] + '_err_' + orig_ccs[11].split('_')[1] + ',' + '"z"' + ',' + 'Ldip_err_{0} - intersect_err_{0}'.format(dipole_dat[dip_no][1]) + ',' + orig_ccs[11] + ")" + orig_ccs[-1]
+                        misaligned_start_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + '1, 0, 0, 0, 1, 0,' + orig_ccs[1].split('_', 1)[0] + '_err_ent_' + orig_ccs[1].split('_', 1)[1] + ')' + orig_ccs[-1]
+                        misaligned_start_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[1] + ',' + '"z"' + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[1].split('_', 1)[0] + '_err_ent_' + orig_ccs[1].split('_', 1)[1] + ')' + orig_ccs[-1]
+                    misaligned_dipole_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[5] +  " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[6] + " -sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[7] + " + 0" + ',' + orig_ccs[8] + " + sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[9] + " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[10] + " + 0" + ',' + orig_ccs[11].split('_')[0] + '_err_ext_' + orig_ccs[11].split('_')[1] + ")" + orig_ccs[-1]
+                    misaligned_dipole_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[11].split('_')[0] + '_err_ext_' + orig_ccs[11].split('_')[1] + ',' + '"z"' + ',' + 'Ldip_err_{0} - intersect_err_{0}'.format(dipole_dat[dip_no][1]) + ',' + orig_ccs[11] + ")" + orig_ccs[-1]
                     break
                     # adding the new ccs & ccsflip elements to the lattice
             new_lattice.insert(dipole_dat[dip_no][2] + dip_no*self.dipole_ccs_add, misaligned_dipole_ccs)
@@ -250,9 +252,9 @@ class GPT_error_mod:
             param_no = 1
             new_lines = []
             line_indexes = []
-            for line in self.file_lines:
-                # find just the parameters to error in the lattice file
-                if any(i in line for i in list(dip_params.keys())) and '_{0}'.format(dip_no+1) in line and 'ccs' not in line and 'screen' not in line and 'sectormagnet' not in line and line[0] != '#':
+            for line in new_lattice:
+                # find just the dipole parameters to error in the lattice fil (exclude already errored elements and screens)
+                if any(i in line for i in list(dip_params.keys())) and '_{0}'.format(dip_no+1) in line and 'err' not in line and 'ccs' not in line and 'screen' not in line and all(i not in line for i in self.GPT_command) and line[0] != '#':
                     new_line = self.replace_dipole_params(line, dip_params)
                     # loop to put the f_ and d_ into the dependent parameters 
                     if any(i in new_line.split('=')[0] for i in list(dip_var_params.keys())):
@@ -261,12 +263,12 @@ class GPT_error_mod:
                         param_no += 1 
                     else:
                         new_lines.append(new_line)
-                    line_indexes.append(self.file_lines.index(line))
+                    line_indexes.append(new_lattice.index(line))
             # write the new parameter definitions to the lattice file        
             for i in range(len(new_lines)):
-                new_lattice.insert(line_indexes[i] + dip_no*self.dipole_add + 1 + i, new_lines[i])
+                new_lattice.insert(line_indexes[i] + 1 + i, new_lines[i])
         # partition err_params for each dipole
-        err_params = [err_params[i:i + len(dip_var_params.keys())] for i in range(0, len(err_params), len(dip_var_params.keys()))] 
+        err_params = [err_params[i:i + len(dip_var_params.keys())] for i in range(0, len(err_params), len(dip_var_params.keys()))]
         return new_lattice, err_params
 
     # applies element replace to all identified elements then writes the errored lattice file
@@ -286,7 +288,11 @@ class GPT_error_mod:
             # add dipole misalignments
             new_lattice = self.add_dipole_ccs(new_lattice)
             # add dipole parameters
-            new_lattice, dip_err_params = self.add_dipole_err_params(new_lattice)
+            new_lattice, dip_err_params = self.add_dipole_err_params_new(new_lattice)
+            # pre-dipole lattice (temporary)
+            #filename_postdip = self.EGPTpath + self.wdEGPTpath + self.infile.split('.')[0] + '_ERR_POSTDIP' + '.' + self.infile.split('.')[-1]
+            #GPTwrite_postdip = open(filename_postdip, "w") # overwrites if previously generated!
+            #GPTwrite_postdip.writelines(new_lattice)
             # modify ident_eles to include dipole parameters
             for ele in range(len(err_param_ident)):
                 if ident_eles[0][ele] == 'sectormagnet':

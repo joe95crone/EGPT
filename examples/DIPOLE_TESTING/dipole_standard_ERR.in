@@ -114,9 +114,9 @@ ccs("wcs", 0, 0, 0.5 + intersect_1, cos(bendang_1/deg), 0, -sin(bendang_1/deg), 
 # Spectrometer Magnet
 ccs("wcs",0 + dx2,0 + dy2,0.5  + dz2,1, 0, 0, 0, 1, 0,"wcs_err");
 ccsflip("wcs","z",0.5  + dz2,"wcs_err");
-ccs("wcs",0 + dx2,0 + dy2,0.5 + intersect_1 + dz2,cos(bendang_1/deg) + cos(th2),0 -sin(th2),-sin(bendang_1/deg) + 0,0 + sin(th2),1  + cos(th2),0 + 0,"bend_err_1");
-sectormagnet("wcs_err","bend_err_1",Rbend_err_1,Bfield_err_1,phiin_err_1,phiout_err_1,dl_err_1,b1_err_1,b2_err_1);
-ccsflip("bend_err_1","z",Ldip_err_1 - intersect_err_1,"bend_1");
+ccs("wcs",0 + dx2,0 + dy2,0.5 + intersect_1 + dz2,cos(bendang_1/deg) + cos(th2),0 -sin(th2),-sin(bendang_1/deg) + 0,0 + sin(th2),1  + cos(th2),0 + 0,"bend_err_ext_1");
+sectormagnet("wcs_err","bend_err_ext_1",Rbend_err_1,Bfield_err_1,phiin_err_1,phiout_err_1,dl_err_1,b1_err_1,b2_err_1);
+ccsflip("bend_err_ext_1","z",Ldip_err_1 - intersect_err_1,"bend_1");
 
 #quadrupole("wcs","z",0.8,0.2,50); # test!
 

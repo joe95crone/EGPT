@@ -42,12 +42,12 @@ quadrupole_1:
 sectormagnet_1:
   dx2:
   - 0
-  - 100.0e-6
+  - 0
   - gaussian
   - 3
   dy2:
   - 0
-  - 100.0e-6
+  - 0
   - gaussian
   - 3
   dz2:
@@ -67,17 +67,17 @@ sectormagnet_1:
   - 3
   f_2_2:
   - 1
-  - 0.01
+  - 0
   - gaussian
   - 3
   f_3_2:
   - 1
-  - 0.01
+  - 0
   - gaussian
   - 3
   f_4_2:
   - 1
-  - 
+  - 0
   - gaussian
   - 3
   f_5_2:
