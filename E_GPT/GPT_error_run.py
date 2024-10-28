@@ -43,7 +43,7 @@ if __name__ == "__main__":
         if os.path.exists(sys.argv[2]) == True:
             # run the GPT file using the yaml tolerance file - use sys.argv[3] for the no. trials
             try:
-                GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2], sys.argv[3])   
+                GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2], sys.argv[3], keep_beam=True)   
             except IndexError: 
                 GPT_run = GPTrun.GPT_run_analyse(sys.argv[1], sys.argv[2])
             # get the analysis    

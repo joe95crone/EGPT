@@ -45,8 +45,6 @@ class GPT_plotting:
 
     # get Lorentz speed Factor - position based only
     # only required for position analysis
-    def Lorentz_speed_fac_pos(self):
-        return self.run_data.trial_1.pos.avgBz.value
 
     # Sorting function based on position - returns an ordered list of the indexes
     def position_sort(self):
@@ -129,17 +127,16 @@ class GPT_plotting:
         plt.ylabel("Beam Size [$\mathregular{\mu}$m]")
         if TP_flag == 'time': 
             for i in range(1,self.ntrials+1):
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdx.value/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.stdy.value/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.time.value*(getattr(self.run_data, self.run_keys[i-1]).time.avgBx.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBy.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBz.value**2)*constants.c, getattr(self.run_data, self.run_keys[i-1]).time.stdx.value/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.time.value*(getattr(self.run_data, self.run_keys[i-1]).time.avgBx.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBy.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBz.value**2)*constants.c, getattr(self.run_data, self.run_keys[i-1]).time.stdy.value/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
             plt.legend()
             plt.title("Time-like")
             plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Beamsize_time.png')
         elif TP_flag == 'pos':
             indexes = self.position_sort()
-            beta_fac = self.Lorentz_speed_fac_pos()
             for i in range(1,self.ntrials+1):
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.stdx.value[indexes]/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.stdy.value[indexes]/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*(getattr(self.run_data, self.run_keys[i-1]).pos.avgBx.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBy.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBz.value[indexes]**2), getattr(self.run_data, self.run_keys[i-1]).pos.stdx.value[indexes]/constants.micro, label="$\mathregular{\sigma_{x}}$ " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*(getattr(self.run_data, self.run_keys[i-1]).pos.avgBx.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBy.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBz.value[indexes]**2), getattr(self.run_data, self.run_keys[i-1]).pos.stdy.value[indexes]/constants.micro, label="$\mathregular{\sigma_{y}}$ " + self.run_keys[i-1])
             plt.legend()
             plt.title('Position-like')
             plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Beamsize_pos.png')        
@@ -151,17 +148,16 @@ class GPT_plotting:
         plt.ylabel("Trajectory [$\mathregular{\mu}$m]")
         if TP_flag == 'time':
             for i in range(1,self.ntrials+1):
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgx.value/constants.micro, label="X " + self.run_keys[i-1])
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.avgz.value, getattr(self.run_data, self.run_keys[i-1]).time.avgy.value/constants.micro, label="Y " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.time.value*(getattr(self.run_data, self.run_keys[i-1]).time.avgBx.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBy.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBz.value**2)*constants.c, getattr(self.run_data, self.run_keys[i-1]).time.avgx.value/constants.micro, label="X " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).time.time.value*(getattr(self.run_data, self.run_keys[i-1]).time.avgBx.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBy.value**2 + getattr(self.run_data, self.run_keys[i-1]).time.avgBz.value**2)*constants.c, getattr(self.run_data, self.run_keys[i-1]).time.avgy.value/constants.micro, label="Y " + self.run_keys[i-1])
             plt.title("Time-like")
             plt.legend()
             plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Trajectory_time.png')
         elif TP_flag == 'pos':
             indexes = self.position_sort()
-            beta_fac = self.Lorentz_speed_fac_pos()
             for i in range(1, self.ntrials+1):
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.avgx.value[indexes]/constants.micro, label="X " + self.run_keys[i-1])
-                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*beta_fac[indexes], getattr(self.run_data, self.run_keys[i-1]).pos.avgy.value[indexes]/constants.micro, label="Y " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*(getattr(self.run_data, self.run_keys[i-1]).pos.avgBx.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBy.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBz.value[indexes]**2), getattr(self.run_data, self.run_keys[i-1]).pos.avgx.value[indexes]/constants.micro, label="X " + self.run_keys[i-1])
+                plt.plot(getattr(self.run_data, self.run_keys[i-1]).pos.avgt.value[indexes]*constants.c*(getattr(self.run_data, self.run_keys[i-1]).pos.avgBx.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBy.value[indexes]**2 + getattr(self.run_data, self.run_keys[i-1]).pos.avgBz.value[indexes]**2), getattr(self.run_data, self.run_keys[i-1]).pos.avgy.value[indexes]/constants.micro, label="Y " + self.run_keys[i-1])
             plt.title("Position-like")
             plt.legend()
             plt.savefig(self.EGPTpath + self.wdEGPTpath + 'FIGS\Trajectory_pos.png')
