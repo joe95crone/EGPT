@@ -228,6 +228,7 @@ class GPT_error_mod:
                         misaligned_start_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[1] + ',' + '"z"' + ',' + orig_ccs[4].split('+', 1)[0] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[1].split('_', 1)[0] + '_err_ent_' + orig_ccs[1].split('_', 1)[1] + ')' + orig_ccs[-1]
                     misaligned_dipole_ccs = orig_ccs[0] + "(" + orig_ccs[1] + ',' + orig_ccs[2] + " + dx{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[3] + " + dy{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[4] + " + dz{0}".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[5] +  " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[6] + " -sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[7] + " + 0" + ',' + orig_ccs[8] + " + sin(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[9] + " + cos(th{0})".format(dipole_dat[dip_no][-1]) + ',' + orig_ccs[10] + " + 0" + ',' + orig_ccs[11].split('_')[0] + '_err_ext_' + orig_ccs[11].split('_')[1] + ")" + orig_ccs[-1]
                     misaligned_dipole_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[11].split('_')[0] + '_err_ext_' + orig_ccs[11].split('_')[1] + ',' + '"z"' + ',' + 'Ldip_err_{0} - intersect_err_{0}'.format(dipole_dat[dip_no][1]) + ',' + orig_ccs[11] + ")" + orig_ccs[-1]
+                    #misaligned_dipole_ccsflip = orig_ccs[0] + "flip" + "(" + orig_ccs[11].split('_')[0] + '_err_ext_' + orig_ccs[11].split('_')[1] + ',' + '"z"' + ',' + 'intersect_{0}'.format(dipole_dat[dip_no][1]) + ',' + orig_ccs[11] + ")" + orig_ccs[-1]
                     break
                     # adding the new ccs & ccsflip elements to the lattice
             new_lattice.insert(dipole_dat[dip_no][2] + dip_no*self.dipole_ccs_add, misaligned_dipole_ccs)
@@ -288,11 +289,7 @@ class GPT_error_mod:
             # add dipole misalignments
             new_lattice = self.add_dipole_ccs(new_lattice)
             # add dipole parameters
-            new_lattice, dip_err_params = self.add_dipole_err_params_new(new_lattice)
-            # pre-dipole lattice (temporary)
-            #filename_postdip = self.EGPTpath + self.wdEGPTpath + self.infile.split('.')[0] + '_ERR_POSTDIP' + '.' + self.infile.split('.')[-1]
-            #GPTwrite_postdip = open(filename_postdip, "w") # overwrites if previously generated!
-            #GPTwrite_postdip.writelines(new_lattice)
+            new_lattice, dip_err_params = self.add_dipole_err_params(new_lattice)
             # modify ident_eles to include dipole parameters
             for ele in range(len(err_param_ident)):
                 if ident_eles[0][ele] == 'sectormagnet':
